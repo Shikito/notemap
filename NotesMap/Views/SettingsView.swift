@@ -22,11 +22,27 @@ import AppKit
 /// Alle Reads gehen über statische Property-Getter; Writes sind threadsafe
 /// (UserDefaults ist auf Apple-Plattformen thread-sicher).
 enum OllamaPreferences {
+    private static let endpointKey = "ollamaEndpoint"
     private static let embedderKey = "ollamaEmbedderModel"
     private static let generatorKey = "ollamaGeneratorModel"
 
+    static let defaultEndpoint = "http://localhost:11434"
     static let defaultEmbedder = "bge-m3"
     static let defaultGenerator = "" // leer = Auto-Pick aus preferredModels
+
+    static var endpoint: String {
+        get { UserDefaults.standard.string(forKey: endpointKey) ?? defaultEndpoint }
+        set { UserDefaults.standard.set(newValue, forKey: endpointKey) }
+    }
+
+    static func url(for endpoint: String) -> URL {
+        let trimmed = endpoint.trimmingCharacters(in: .whitespacesAndNewlines)
+        return URL(string: trimmed) ?? URL(string: defaultEndpoint)!
+    }
+
+    static var baseURL: URL {
+        url(for: endpoint)
+    }
 
     static var embedderModel: String {
         get { UserDefaults.standard.string(forKey: embedderKey) ?? defaultEmbedder }
@@ -51,6 +67,7 @@ final class SettingsModel: ObservableObject {
     }
 
     @Published var ollamaState: OllamaState = .checking
+    @Published var endpointSelection: String = OllamaPreferences.endpoint
     @Published var embedderSelection: String = OllamaPreferences.embedderModel
     @Published var generatorSelection: String = OllamaPreferences.generatorModel
     @Published var savedAt: Date? = nil
@@ -98,7 +115,8 @@ final class SettingsModel: ObservableObject {
 
     func reload() async {
         ollamaState = .checking
-        var request = URLRequest(url: URL(string: "http://localhost:11434/api/tags")!)
+        var request = URLRequest(url: OllamaPreferences.url(for: endpointSelection)
+            .appendingPathComponent("api/tags"))
         request.timeoutInterval = 2.0
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -115,6 +133,7 @@ final class SettingsModel: ObservableObject {
     }
 
     func save() {
+        OllamaPreferences.endpoint = endpointSelection
         OllamaPreferences.embedderModel = embedderSelection
         OllamaPreferences.generatorModel = generatorSelection
         savedAt = Date()
@@ -153,7 +172,8 @@ final class SettingsModel: ObservableObject {
     private func runPull(name: String) async {
         pullState = .pulling(name: name, status: "Starting…", fraction: 0, downloaded: 0, total: 0)
 
-        var request = URLRequest(url: URL(string: "http://localhost:11434/api/pull")!)
+        var request = URLRequest(url: OllamaPreferences.url(for: endpointSelection)
+            .appendingPathComponent("api/pull"))
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.timeoutInterval = 3600 // bis zu 1h für große Modelle
@@ -296,6 +316,7 @@ struct SettingsView: View {
                 statusBanner
                 Divider()
                 Form {
+                    serverSection
                     modelPickers
                     pullSection
                 }
@@ -442,6 +463,24 @@ struct SettingsView: View {
                 Spacer()
                 Button(Localized.string(\.onbRecheck)) { Task { await model.reload() } }
             }
+        }
+    }
+
+    private var serverSection: some View {
+        Section(Localized.string(\.settingsOllamaEndpoint)) {
+            TextField(Localized.string(\.settingsOllamaEndpointPlaceholder),
+                      text: $model.endpointSelection)
+                .textFieldStyle(.roundedBorder)
+                .onSubmit {
+                    Task { await model.reload() }
+                }
+            Text(Localized.string(\.settingsOllamaEndpointHint))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Button(Localized.string(\.onbRecheck)) {
+                Task { await model.reload() }
+            }
+            .controlSize(.small)
         }
     }
 

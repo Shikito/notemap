@@ -193,6 +193,15 @@ struct Localized {
     let settingsCheckingOllama: T2 = ("Prüfe Ollama…", "Checking Ollama…")
     let settingsOllamaUnreachable: T2 = ("Ollama nicht erreichbar", "Ollama not reachable")
     let settingsOllamaRunning: T2 = ("Ollama läuft", "Ollama running")
+    let settingsOllamaEndpoint: T2 = ("Ollama-Server", "Ollama server")
+    let settingsOllamaEndpointPlaceholder: T2 = (
+        "http://boco-mothership.local:11434",
+        "http://boco-mothership.local:11434"
+    )
+    let settingsOllamaEndpointHint: T2 = (
+        "Standard: localhost. Für einen Rechner im Heimnetz einen vollständigen http://-Endpunkt eintragen.",
+        "Default: localhost. For a computer on your home network, enter a complete http:// endpoint."
+    )
     let settingsModelEmbedder: T2 = ("Embedding-Modell (Höhenkarte-Clustering)", "Embedding model (Heightmap clustering)")
     let settingsModelGenerator: T2 = ("Label-Generator-Modell (Peak-Beschriftungen)", "Label-generator model (Heightmap peaks)")
     let settingsModelDefault: T2 = ("Standard", "Default")

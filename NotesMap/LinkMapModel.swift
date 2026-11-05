@@ -256,7 +256,10 @@ final class LinkMapModel: ObservableObject {
                               message: Localized.string(\.statusCheckingOllama))
 
         // Embedder aus Settings (Cmd+,) oder Default `bge-m3`.
-        let service = EmbeddingService(model: OllamaPreferences.embedderModel)
+        let service = EmbeddingService(
+            baseURL: OllamaPreferences.baseURL,
+            model: OllamaPreferences.embedderModel
+        )
         let manager = EmbeddingManager(service: service)
 
         // 1. Ollama erreichbar + Modell geladen?
@@ -451,7 +454,10 @@ final class LinkMapModel: ObservableObject {
         // Generator-Modell aus Settings (Cmd+,). Leerer String = Auto-Pick aus
         // OllamaLabelService.preferredModels.
         let userPick = OllamaPreferences.generatorModel
-        let service = OllamaLabelService(model: userPick.isEmpty ? nil : userPick)
+        let service = OllamaLabelService(
+            baseURL: OllamaPreferences.baseURL,
+            model: userPick.isEmpty ? nil : userPick
+        )
         // Modell auflösen: nimmt das erste aus der Präferenzliste, das der User
         // installiert hat. Ollama läuft wahrscheinlich schon (Embeddings liefen
         // gerade), aber ein generatives Modell ist ein anderes als bge-m3.
