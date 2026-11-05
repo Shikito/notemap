@@ -8,6 +8,7 @@
 // einmalig Full Disk Access erteilen.
 
 import SwiftUI
+import AppKit
 
 struct ContentView: View {
     @StateObject private var model = LinkMapModel()
@@ -57,6 +58,11 @@ struct ContentView: View {
                 .frame(width: 190)
             }
         }
+        .onChange(of: selectedView) { _, newValue in
+            if newValue == .kozane {
+                KozaneSideBySideCoordinator.arrange()
+            }
+        }
         .task(id: shouldShowOnboarding) {
             // Erst nach Abschluss von Onboarding loslegen, sonst rennt der
             // initialLoad in einen FDA-Fehler bevor der User die Berechtigung
@@ -88,6 +94,71 @@ struct ContentView: View {
 private enum NotesMapPrimaryView: Hashable {
     case map
     case kozane
+}
+
+/// Kozane を開く時だけ、現在の画面を二分して Notes と NoteMap を並べる。
+/// Notes のウィンドウ操作を許可しない場合でも、Notes の起動と NoteMap の右配置は行う。
+@MainActor
+private enum KozaneSideBySideCoordinator {
+    static func arrange() {
+        guard let noteMapWindow = NSApp.keyWindow ?? NSApp.mainWindow,
+              let screen = noteMapWindow.screen ?? NSScreen.main else {
+            return
+        }
+
+        let visibleFrame = screen.visibleFrame
+        let halfWidth = floor(visibleFrame.width / 2)
+        let notesFrame = NSRect(
+            x: visibleFrame.minX,
+            y: visibleFrame.minY,
+            width: halfWidth,
+            height: visibleFrame.height
+        )
+        let noteMapFrame = NSRect(
+            x: visibleFrame.minX + halfWidth,
+            y: visibleFrame.minY,
+            width: visibleFrame.width - halfWidth,
+            height: visibleFrame.height
+        )
+
+        noteMapWindow.setFrame(noteMapFrame, display: true, animate: true)
+
+        let notesBounds = AppleScriptBounds(
+            left: Int(notesFrame.minX.rounded()),
+            top: Int((screen.frame.maxY - notesFrame.maxY).rounded()),
+            right: Int(notesFrame.maxX.rounded()),
+            bottom: Int((screen.frame.maxY - notesFrame.minY).rounded())
+        )
+        let notesURL = URL(fileURLWithPath: "/System/Applications/Notes.app")
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = false
+        NSWorkspace.shared.openApplication(at: notesURL, configuration: configuration) { _, _ in
+            Task { @MainActor in
+                positionNotesWindow(with: notesBounds)
+            }
+        }
+    }
+
+    private static func positionNotesWindow(with bounds: AppleScriptBounds) {
+        let source = """
+        tell application "Notes"
+            activate
+            if (count of windows) > 0 then
+                set bounds of front window to {\(bounds.left), \(bounds.top), \(bounds.right), \(bounds.bottom)}
+            end if
+        end tell
+        """
+
+        var error: NSDictionary?
+        NSAppleScript(source: source)?.executeAndReturnError(&error)
+    }
+
+    private struct AppleScriptBounds: Sendable {
+        let left: Int
+        let top: Int
+        let right: Int
+        let bottom: Int
+    }
 }
 
 // MARK: - LoadingView
