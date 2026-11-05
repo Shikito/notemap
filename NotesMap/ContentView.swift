@@ -118,6 +118,7 @@ private enum KozaneSideBySideCoordinator {
         )
 
         noteMapWindow.setFrame(noteMapFrame, display: true, animate: true)
+        kozaneWindow = noteMapWindow
 
         let notesBounds = AppleScriptBounds(
             left: Int(notesFrame.minX.rounded()),
@@ -129,6 +130,7 @@ private enum KozaneSideBySideCoordinator {
     }
 
     private static var companionProcessIdentifier: pid_t?
+    private static var kozaneWindow: NSWindow?
 
     private static func arrangeCompanionNotesWindow(with bounds: AppleScriptBounds) -> String? {
         let promptOption = ["AXTrustedCheckOptionPrompt": true] as CFDictionary
@@ -184,6 +186,15 @@ private enum KozaneSideBySideCoordinator {
         }
 
         let windowElement = unsafeBitCast(focusedWindow, to: AXUIElement.self)
+
+        // 新しく起動した Notes が、既存の全画面 Notes の Split View に合流するのを防ぐ。
+        // ここで操作するのは Kozane 専用プロセスのウィンドウだけである。
+        _ = AXUIElementSetAttributeValue(
+            windowElement,
+            "AXFullScreen" as CFString,
+            kCFBooleanFalse
+        )
+
         var position = CGPoint(x: bounds.left, y: bounds.top)
         var size = CGSize(width: bounds.right - bounds.left, height: bounds.bottom - bounds.top)
         guard let positionValue = AXValueCreate(.cgPoint, &position),
@@ -204,7 +215,7 @@ private enum KozaneSideBySideCoordinator {
         guard positionResult == .success, sizeResult == .success else {
             return "macOS が Kozane 用 Notes の配置変更を許可しませんでした。"
         }
-        application.activate()
+        kozaneWindow?.makeKeyAndOrderFront(nil)
         return nil
     }
 
