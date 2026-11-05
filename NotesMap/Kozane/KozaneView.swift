@@ -4,10 +4,11 @@ import AppKit
 import SwiftUI
 
 struct KozaneView: View {
-    let onArrangeNotes: () -> Void
+    let onArrangeNotes: () -> String?
 
     @State private var store = KozaneStore()
     @State private var didCopy = false
+    @State private var notesArrangementError: String?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -22,6 +23,14 @@ struct KozaneView: View {
         }
         .background(KozanePalette.paper)
         .preferredColorScheme(.light)
+        .alert("Notes を横に並べられませんでした", isPresented: Binding(
+            get: { notesArrangementError != nil },
+            set: { if !$0 { notesArrangementError = nil } }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(notesArrangementError ?? "")
+        }
     }
 
     private var header: some View {

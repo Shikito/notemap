@@ -95,10 +95,10 @@ private enum NotesMapPrimaryView: Hashable {
 /// Notes のウィンドウ操作を許可しない場合でも、Notes の起動と NoteMap の右配置は行う。
 @MainActor
 private enum KozaneSideBySideCoordinator {
-    static func arrange() {
+    static func arrange() -> String? {
         guard let noteMapWindow = NSApp.keyWindow ?? NSApp.mainWindow,
               let screen = noteMapWindow.screen ?? NSScreen.main else {
-            return
+            return "NoteMap のウィンドウが見つかりません。"
         }
 
         let visibleFrame = screen.visibleFrame
@@ -124,10 +124,10 @@ private enum KozaneSideBySideCoordinator {
             right: Int(notesFrame.maxX.rounded()),
             bottom: Int((screen.frame.maxY - notesFrame.minY).rounded())
         )
-        arrangeCompanionNotesWindow(with: notesBounds)
+        return arrangeCompanionNotesWindow(with: notesBounds)
     }
 
-    private static func arrangeCompanionNotesWindow(with bounds: AppleScriptBounds) {
+    private static func arrangeCompanionNotesWindow(with bounds: AppleScriptBounds) -> String? {
         // 通常サイズの Notes ウィンドウがあれば再利用する。すべてがフルスクリーン
         // のときだけ新規ウィンドウを作るため、操作のたびにウィンドウは増えない。
         let source = """
@@ -162,8 +162,18 @@ private enum KozaneSideBySideCoordinator {
         end tell
         """
 
+        guard let script = NSAppleScript(source: source) else {
+            return "Notes を操作するスクリプトを作れませんでした。"
+        }
+
         var error: NSDictionary?
-        NSAppleScript(source: source)?.executeAndReturnError(&error)
+        script.executeAndReturnError(&error)
+
+        guard let error else {
+            return nil
+        }
+        return error[NSAppleScript.errorMessage] as? String
+            ?? "macOS が Notes または System Events の操作を許可しませんでした。"
     }
 
     private struct AppleScriptBounds: Sendable {
