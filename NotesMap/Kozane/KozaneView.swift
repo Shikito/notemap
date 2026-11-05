@@ -14,12 +14,8 @@ struct KozaneView: View {
         VStack(spacing: 0) {
             header
             Divider()
-            HSplitView {
-                workSurface
-                    .frame(minWidth: 620, maxWidth: .infinity, maxHeight: .infinity)
-                sourceRail
-                    .frame(minWidth: 230, idealWidth: 280, maxWidth: 340, maxHeight: .infinity)
-            }
+            workSurface
+                .frame(minWidth: 480, maxWidth: .infinity, maxHeight: .infinity)
         }
         .background(KozanePalette.paper)
         .preferredColorScheme(.light)
@@ -115,26 +111,6 @@ struct KozaneView: View {
         }
     }
 
-    private var sourceRail: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label("Related Notes", systemImage: "sparkle.magnifyingglass")
-                .font(.headline)
-
-            Text("While you write, related Apple Notes and kozane will appear here. Phase 1 keeps this space quiet so the cards and the writing come first.")
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-
-            Spacer()
-
-            Label("Apple Notes stays the original", systemImage: "lock.fill")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
-        .padding(18)
-        .background(KozanePalette.rail)
-    }
-
     private func copyForAppleNotes() {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(store.composedText, forType: .string)
@@ -217,7 +193,6 @@ private enum KozanePalette {
     static let paper = Color(red: 1.0, green: 0.99, blue: 0.94)
     static let header = Color(red: 1.0, green: 0.98, blue: 0.86)
     static let board = Color(red: 0.99, green: 0.97, blue: 0.88)
-    static let rail = Color(red: 1.0, green: 0.98, blue: 0.90)
     static let cardHeader = Color(red: 1.0, green: 0.94, blue: 0.68)
     static let cardBorder = Color(red: 0.87, green: 0.82, blue: 0.64)
     static let accent = Color(red: 0.86, green: 0.61, blue: 0.04)
