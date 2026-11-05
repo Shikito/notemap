@@ -92,6 +92,7 @@
 		952BC9AE1D972CDD335021C8 /* ProtobufReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtobufReader.swift; sourceTree = "<group>"; };
 		953CD0F59692A86C6B14D571 /* LinkMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMapModel.swift; sourceTree = "<group>"; };
 		99752DEE6C629ED7EA308E53 /* EmbeddingCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingCache.swift; sourceTree = "<group>"; };
+		99F82991309CA77500979760 /* ROADMAP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ROADMAP.md; sourceTree = "<group>"; };
 		9E2CC55E581CFB2652BE608C /* NotesMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesMapApp.swift; sourceTree = "<group>"; };
 		A2CD7D795FD7160E12DEF931 /* NotesMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB11D195EDB24033750F9C18 /* three.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = three.min.js; sourceTree = "<group>"; };
@@ -108,7 +109,7 @@
 		DCDEF529C6BBB6E07F36AA76 /* LinkMapHTMLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMapHTMLBuilder.swift; sourceTree = "<group>"; };
 		EB6663AF659F481E15E574E5 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		EE32A9D39ABB9A26CEF4D8A7 /* EmbeddingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingManager.swift; sourceTree = "<group>"; };
-		F4E787CBD2A4BA0C45BB5414 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F4E787CBD2A4BA0C45BB5414 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F8F838C914792D0F5F566056 /* OllamaLabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaLabelService.swift; sourceTree = "<group>"; };
 		FEDBEC61BBB5E6C83A62D2BB /* NoteStoreDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStoreDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,6 +160,7 @@
 			children = (
 				A51999DD61A692D040E51E92 /* NotesMap */,
 				057DDBE27B78430466206844 /* NotesMapTests */,
+				99F82991309CA77500979760 /* ROADMAP.md */,
 				A441282F1BC59F21E29BA4C0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -335,7 +337,7 @@
 			mainGroup = 370735D33A33CD49E98315E4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				057B38093B30331E97CE5D65 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				057B38093B30331E97CE5D65 /* XCRemoteSwiftPackageReference "GRDB" */,
 				35B85B58EE643E25E93DD306 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -681,7 +683,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		057B38093B30331E97CE5D65 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+		057B38093B30331E97CE5D65 /* XCRemoteSwiftPackageReference "GRDB" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/GRDB.swift";
 			requirement = {
@@ -702,7 +704,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		014C6FAD0F9906538060171B /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 057B38093B30331E97CE5D65 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			package = 057B38093B30331E97CE5D65 /* XCRemoteSwiftPackageReference "GRDB" */;
 			productName = GRDB;
 		};
 		F50F96A14FAC6FB544217223 /* Sparkle */ = {

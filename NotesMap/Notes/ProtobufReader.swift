@@ -46,18 +46,25 @@ enum ProtobufReader {
 
             case 2:  // Length-delimited
                 guard let len = readVarint(data, at: i),
-                      len.value >= 0,
-                      i + len.bytesRead + Int(len.value) <= end
+                      let length = Int(exactly: len.value),
+                      len.bytesRead <= end - i
                 else { i = start + 1; continue }
-                i += len.bytesRead
-                let payloadRange = i..<(i + Int(len.value))
+
+                let payloadStart = i + len.bytesRead
+                guard length <= end - payloadStart else {
+                    i = start + 1
+                    continue
+                }
+
+                i = payloadStart
+                let payloadRange = i..<(i + length)
                 let payload = data.subdata(in: payloadRange)
                 result.append(payload)
                 // Rekursion nur wenn's wie eine Sub-Message aussieht
-                if len.value > 10 && looksLikeProtobuf(payload) {
+                if length > 10 && looksLikeProtobuf(payload) {
                     collectRecursive(payload, into: &result)
                 }
-                i += Int(len.value)
+                i += length
 
             case 5:  // 32-bit fixed
                 i += 4
