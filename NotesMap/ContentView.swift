@@ -184,6 +184,56 @@ private enum KozaneSideBySideCoordinator {
         return companion
     }
 
+    private static func hideCompanionFolders(in applicationElement: AXUIElement) {
+        guard let menuBarValue = elementAttribute(
+            applicationElement,
+            attribute: kAXMenuBarAttribute as CFString
+        ) else {
+            return
+        }
+        let menuBar = unsafeBitCast(menuBarValue, to: AXUIElement.self)
+
+        guard let viewMenu = descendants(of: menuBar).first(where: {
+            let title = stringAttribute($0, attribute: kAXTitleAttribute as CFString)
+            return title == "表示" || title == "View"
+        }) else {
+            return
+        }
+
+        _ = AXUIElementPerformAction(viewMenu, kAXPressAction as CFString)
+
+        guard let hideFoldersItem = descendants(of: viewMenu).first(where: {
+            let title = stringAttribute($0, attribute: kAXTitleAttribute as CFString)
+            return title == "フォルダを隠す" || title == "Hide Folders"
+        }) else {
+            return
+        }
+        _ = AXUIElementPerformAction(hideFoldersItem, kAXPressAction as CFString)
+    }
+
+    private static func descendants(of element: AXUIElement, depth: Int = 0) -> [AXUIElement] {
+        guard depth < 4,
+              let children = elementAttribute(element, attribute: kAXChildrenAttribute as CFString) as? [AXUIElement] else {
+            return []
+        }
+        return children + children.flatMap { descendants(of: $0, depth: depth + 1) }
+    }
+
+    private static func elementAttribute(
+        _ element: AXUIElement,
+        attribute: CFString
+    ) -> CFTypeRef? {
+        var value: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(element, attribute, &value) == .success else {
+            return nil
+        }
+        return value
+    }
+
+    private static func stringAttribute(_ element: AXUIElement, attribute: CFString) -> String? {
+        elementAttribute(element, attribute: attribute) as? String
+    }
+
     private static func companionWindowElement(in applicationElement: AXUIElement) -> AXUIElement? {
         var focusedWindow: CFTypeRef?
         if AXUIElementCopyAttributeValue(
@@ -244,6 +294,7 @@ private enum KozaneSideBySideCoordinator {
         guard positionResult == .success, sizeResult == .success else {
             return "macOS が Kozane 用 Notes の配置変更を許可しませんでした。"
         }
+        hideCompanionFolders(in: applicationElement)
         kozaneWindow?.makeKeyAndOrderFront(nil)
         return nil
     }
