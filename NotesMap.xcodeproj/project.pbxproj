@@ -93,6 +93,7 @@
 		953CD0F59692A86C6B14D571 /* LinkMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMapModel.swift; sourceTree = "<group>"; };
 		99752DEE6C629ED7EA308E53 /* EmbeddingCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingCache.swift; sourceTree = "<group>"; };
 		99F82991309CA77500979760 /* ROADMAP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ROADMAP.md; sourceTree = "<group>"; };
+		99F82992309CC18D00979760 /* KOZANE_DESIGN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = KOZANE_DESIGN.md; sourceTree = "<group>"; };
 		9E2CC55E581CFB2652BE608C /* NotesMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesMapApp.swift; sourceTree = "<group>"; };
 		A2CD7D795FD7160E12DEF931 /* NotesMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB11D195EDB24033750F9C18 /* three.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = three.min.js; sourceTree = "<group>"; };
@@ -161,6 +162,7 @@
 				A51999DD61A692D040E51E92 /* NotesMap */,
 				057DDBE27B78430466206844 /* NotesMapTests */,
 				99F82991309CA77500979760 /* ROADMAP.md */,
+				99F82992309CC18D00979760 /* KOZANE_DESIGN.md */,
 				A441282F1BC59F21E29BA4C0 /* Products */,
 			);
 			sourceTree = "<group>";
