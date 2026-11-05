@@ -53,6 +53,14 @@ struct KozaneView: View {
                 .foregroundStyle(.secondary)
 
             Button {
+                notesArrangementError = onArrangeNotes()
+            } label: {
+                Label("Notes を横に並べる", systemImage: "rectangle.lefthalf.inset.filled")
+            }
+            .buttonStyle(.bordered)
+            .help("通常サイズの Notes を左側へ配置します")
+
+            Button {
                 store.addCard()
             } label: {
                 Label("New card", systemImage: "plus")
