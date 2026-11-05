@@ -26,7 +26,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if selectedView == .kozane {
-                KozaneView()
+                KozaneView(onArrangeNotes: KozaneSideBySideCoordinator.arrange)
             } else {
                 ZStack {
                     if shouldShowOnboarding {
@@ -56,11 +56,6 @@ struct ContentView: View {
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 190)
-            }
-        }
-        .onChange(of: selectedView) { _, newValue in
-            if newValue == .kozane {
-                KozaneSideBySideCoordinator.arrange()
             }
         }
         .task(id: shouldShowOnboarding) {
@@ -129,23 +124,41 @@ private enum KozaneSideBySideCoordinator {
             right: Int(notesFrame.maxX.rounded()),
             bottom: Int((screen.frame.maxY - notesFrame.minY).rounded())
         )
-        let notesURL = URL(fileURLWithPath: "/System/Applications/Notes.app")
-        let configuration = NSWorkspace.OpenConfiguration()
-        configuration.activates = false
-        NSWorkspace.shared.openApplication(at: notesURL, configuration: configuration) { _, _ in
-            Task { @MainActor in
-                positionNotesWindow(with: notesBounds)
-            }
-        }
+        arrangeCompanionNotesWindow(with: notesBounds)
     }
 
-    private static func positionNotesWindow(with bounds: AppleScriptBounds) {
+    private static func arrangeCompanionNotesWindow(with bounds: AppleScriptBounds) {
+        // 通常サイズの Notes ウィンドウがあれば再利用する。すべてがフルスクリーン
+        // のときだけ新規ウィンドウを作るため、操作のたびにウィンドウは増えない。
         let source = """
-        tell application "Notes"
-            activate
-            if (count of windows) > 0 then
-                set bounds of front window to {\(bounds.left), \(bounds.top), \(bounds.right), \(bounds.bottom)}
-            end if
+        tell application "Notes" to activate
+        tell application "System Events"
+            tell process "Notes"
+                set companionWindow to missing value
+                repeat with noteWindow in windows
+                    try
+                        if value of attribute "AXFullScreen" of noteWindow is false then
+                            set companionWindow to noteWindow
+                            exit repeat
+                        end if
+                    end try
+                end repeat
+
+                if companionWindow is missing value then
+                    try
+                        click menu item "New Window" of menu "Window" of menu bar 1
+                    on error
+                        click menu item "新規ウインドウ" of menu "ウインドウ" of menu bar 1
+                    end try
+                    delay 0.4
+                    set companionWindow to front window
+                end if
+
+                if companionWindow is not missing value then
+                    set position of companionWindow to {\(bounds.left), \(bounds.top)}
+                    set size of companionWindow to {\(bounds.right - bounds.left), \(bounds.bottom - bounds.top)}
+                end if
+            end tell
         end tell
         """
 

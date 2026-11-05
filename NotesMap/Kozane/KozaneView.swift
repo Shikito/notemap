@@ -4,6 +4,8 @@ import AppKit
 import SwiftUI
 
 struct KozaneView: View {
+    let onArrangeNotes: () -> Void
+
     @State private var store = KozaneStore()
     @State private var didCopy = false
 
