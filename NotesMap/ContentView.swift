@@ -184,22 +184,37 @@ private enum KozaneSideBySideCoordinator {
         return companion
     }
 
+    private static func companionWindowElement(in applicationElement: AXUIElement) -> AXUIElement? {
+        var focusedWindow: CFTypeRef?
+        if AXUIElementCopyAttributeValue(
+            applicationElement,
+            kAXFocusedWindowAttribute as CFString,
+            &focusedWindow
+        ) == .success,
+        let focusedWindow {
+            return unsafeBitCast(focusedWindow, to: AXUIElement.self)
+        }
+
+        var windows: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(
+            applicationElement,
+            kAXWindowsAttribute as CFString,
+            &windows
+        ) == .success,
+        let windows = windows as? [AXUIElement] else {
+            return nil
+        }
+        return windows.first
+    }
+
     private static func position(
         _ application: NSRunningApplication,
         in bounds: AppleScriptBounds
     ) -> String? {
         let applicationElement = AXUIElementCreateApplication(application.processIdentifier)
-        var focusedWindow: CFTypeRef?
-        guard AXUIElementCopyAttributeValue(
-            applicationElement,
-            kAXFocusedWindowAttribute as CFString,
-            &focusedWindow
-        ) == .success,
-        let focusedWindow else {
+        guard let windowElement = companionWindowElement(in: applicationElement) else {
             return "Kozane 用に起動した Notes のウィンドウが見つかりません。"
         }
-
-        let windowElement = unsafeBitCast(focusedWindow, to: AXUIElement.self)
 
         // 新しく起動した Notes が、既存の全画面 Notes の Split View に合流するのを防ぐ。
         // ここで操作するのは Kozane 専用プロセスのウィンドウだけである。
