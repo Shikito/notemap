@@ -129,7 +129,11 @@ private enum KozaneSideBySideCoordinator {
         return arrangeCompanionNotesWindow(with: notesBounds)
     }
 
-    private static var companionProcessIdentifier: pid_t?
+    private static let companionProcessIdentifierKey = "kozaneNotesCompanionProcessIdentifier"
+    private static var companionProcessIdentifier: pid_t? = {
+        let identifier = UserDefaults.standard.integer(forKey: companionProcessIdentifierKey)
+        return identifier > 0 ? pid_t(identifier) : nil
+    }()
     private static var kozaneWindow: NSWindow?
 
     private static func arrangeCompanionNotesWindow(with bounds: AppleScriptBounds) -> String? {
@@ -154,6 +158,10 @@ private enum KozaneSideBySideCoordinator {
             let processIdentifier = application.processIdentifier
             Task { @MainActor in
                 companionProcessIdentifier = processIdentifier
+                UserDefaults.standard.set(
+                    processIdentifier,
+                    forKey: companionProcessIdentifierKey
+                )
                 try? await Task.sleep(nanoseconds: 500_000_000)
                 guard let companion = existingCompanionApplication() else { return }
                 _ = position(companion, in: bounds)
@@ -165,9 +173,15 @@ private enum KozaneSideBySideCoordinator {
     private static func existingCompanionApplication() -> NSRunningApplication? {
         guard let processIdentifier = companionProcessIdentifier else { return nil }
 
-        return NSRunningApplication
+        let companion = NSRunningApplication
             .runningApplications(withBundleIdentifier: "com.apple.Notes")
             .first(where: { $0.processIdentifier == processIdentifier && !$0.isTerminated })
+
+        if companion == nil {
+            companionProcessIdentifier = nil
+            UserDefaults.standard.removeObject(forKey: companionProcessIdentifierKey)
+        }
+        return companion
     }
 
     private static func position(
