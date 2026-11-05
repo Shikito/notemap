@@ -709,8 +709,8 @@ enum LinkMapHTMLBuilder {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', system-ui, sans-serif; background: #FFFDF5; color: #1D1D1F; overflow: hidden; }
 
-        #header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,253,245,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid #E3D8B7; padding: 10px 18px; display: flex; align-items: center; gap: 16px; height: 50px; }
-        #header h1 { font-size: 15px; font-weight: 600; white-space: nowrap; }
+        #header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,253,245,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid #E3D8B7; padding: 10px 18px; display: flex; align-items: center; gap: 16px; height: 50px; min-width: 0; overflow: hidden; }
+        #header h1 { font-size: 15px; font-weight: 600; white-space: nowrap; flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
         .app-mark { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; margin-right: 6px; vertical-align: -7px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; }
         #stats { font-size: 12px; color: #6C6250; display: flex; gap: 14px; }
         .stat-value { color: #D49A00; font-weight: 600; }
@@ -736,6 +736,18 @@ enum LinkMapHTMLBuilder {
         @media (max-width: 1450px) {
             #mode-toggle button { padding: 6px 8px; }
             #mode-toggle button .lbl { display: none; }
+        }
+        @media (max-width: 1100px) {
+            #stats { display: none; }
+            #header { gap: 9px; padding-left: 12px; padding-right: 12px; }
+            #search-wrap { margin-left: 2px; min-width: 90px; }
+            #btn-refresh { margin-left: 2px; }
+        }
+        @media (max-width: 760px) {
+            #header h1 { max-width: 110px; }
+            #search-wrap { display: none; }
+            #mode-toggle { margin-left: 0; }
+            #mode-toggle button { padding-left: 6px; padding-right: 6px; }
         }
 
         #btn-refresh { margin-left: 10px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; color: #5A5040; cursor: pointer; font-family: inherit; font-size: 14px; transition: all 0.15s; padding: 0; }

@@ -131,6 +131,25 @@ struct Localized {
     let helpOpenLicense: T2 = ("Lizenz öffnen", "Open License")
     let viewMap: T2 = ("Karte", "Map")
     let viewKozane: T2 = ("Kozane", "Kozane")
+    let kozaneRelatedNotes: T2 = ("Ähnliche Notizen", "Related Notes")
+    let kozaneSelectCard: T2 = ("Karte auswählen", "Select a card")
+    let kozaneSelectCardDescription: T2 = (
+        "Zeigt Notizen mit ähnlicher Bedeutung wie die ausgewählte Karte.",
+        "Shows notes semantically similar to the selected card."
+    )
+    let kozanePreparingEmbeddings: T2 = ("Notiz-Embeddings werden vorbereitet…", "Preparing note embeddings…")
+    let kozaneCalculatingSimilarity: T2 = ("Ähnlichkeit wird berechnet…", "Calculating similarity…")
+    let kozaneSearchUnavailable: T2 = ("Ähnlichkeitssuche nicht verfügbar", "Similarity search unavailable")
+    let kozaneNoMatches: T2 = ("Keine Treffer", "No matches")
+    let kozaneNoMatchesDescription: T2 = (
+        "Es wurden keine ähnlichen Notizen gefunden.",
+        "No related notes were found."
+    )
+    let kozaneSimilarity: T2 = ("Ähnlichkeit %.2f", "Similarity %.2f")
+    let kozaneNoBody: T2 = ("Kein Text", "No body text")
+    let kozaneBackToRelated: T2 = ("Zurück zu ähnlichen Notizen", "Back to related notes")
+    let kozaneReadHere: T2 = ("In Kozane lesen", "Read in Kozane")
+    let kozaneOpenInNotes: T2 = ("In Apple Notes öffnen", "Open in Apple Notes")
 
     let errorTitle: T2 = ("Konnte Notizen nicht laden", "Couldn't load notes")
     let errorRetry: T2 = ("Erneut versuchen", "Retry")

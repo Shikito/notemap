@@ -24,8 +24,16 @@ struct KozaneBundle: Codable, Equatable {
     var title: String
     var cards: [KozaneCard]
     var updatedAt: Date
+    var sourceNoteID: String?
+    var sourceBody: String?
 
-    static let empty = KozaneBundle(title: "", cards: [], updatedAt: .now)
+    static let empty = KozaneBundle(
+        title: "",
+        cards: [],
+        updatedAt: .now,
+        sourceNoteID: nil,
+        sourceBody: nil
+    )
 }
 
 @MainActor
@@ -43,14 +51,41 @@ final class KozaneStore {
         selectedCardID = bundle.cards.first?.id
     }
 
+    func synchronize(with note: SelectedAppleNote) {
+        guard bundle.sourceNoteID != note.id || bundle.sourceBody != note.body else { return }
+
+        let pieces = Self.cardTexts(from: note)
+        var reusableCards: [String: [KozaneCard]] = Dictionary(
+            grouping: bundle.cards,
+            by: { $0.text }
+        )
+
+        let cards = pieces.enumerated().map { index, text in
+            if var matches = reusableCards[text], !matches.isEmpty {
+                let card = matches.removeFirst()
+                reusableCards[text] = matches
+                return card
+            }
+            return KozaneCard(
+                text: text,
+                position: Self.defaultPosition(for: index)
+            )
+        }
+
+        bundle = KozaneBundle(
+            title: note.title,
+            cards: cards,
+            updatedAt: .now,
+            sourceNoteID: note.id,
+            sourceBody: note.body
+        )
+        selectedCardID = cards.first?.id
+        save()
+    }
+
     func addCard() {
         let index = bundle.cards.count
-        let card = KozaneCard(
-            position: KozanePoint(
-                x: 180 + Double(index % 4) * 250,
-                y: 140 + Double(index / 4) * 190
-            )
-        )
+        let card = KozaneCard(position: Self.defaultPosition(for: index))
         bundle.cards.append(card)
         selectedCardID = card.id
         save()
@@ -88,6 +123,15 @@ final class KozaneStore {
         save()
     }
 
+    var selectedCardText: String {
+        guard let selectedCardID else { return "" }
+        return bundle.cards.first(where: { $0.id == selectedCardID })?.text ?? ""
+    }
+
+    var sourceNoteID: String? {
+        bundle.sourceNoteID
+    }
+
     var composedText: String {
         bundle.cards
             .filter { !$0.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
@@ -113,6 +157,28 @@ final class KozaneStore {
         } catch {
             saveError = error.localizedDescription
         }
+    }
+
+    private static func cardTexts(from note: SelectedAppleNote) -> [String] {
+        var pieces = note.body
+            .components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+
+        if pieces.first == note.title {
+            pieces.removeFirst()
+        }
+        if pieces.isEmpty, !note.title.isEmpty {
+            pieces = [note.title]
+        }
+        return pieces
+    }
+
+    private static func defaultPosition(for index: Int) -> KozanePoint {
+        KozanePoint(
+            x: 180 + Double(index % 4) * 250,
+            y: 140 + Double(index / 4) * 190
+        )
     }
 
     private static func storageURL() -> URL {

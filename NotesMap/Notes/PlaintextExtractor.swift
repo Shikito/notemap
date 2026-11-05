@@ -57,10 +57,10 @@ enum PlaintextExtractor {
         options: [.caseInsensitive]
     )
     private static let letterRegex = try! NSRegularExpression(
-        pattern: "[a-zA-ZäöüßÄÖÜ]"
+        pattern: "\\p{L}"
     )
     private static let goodCharRegex = try! NSRegularExpression(
-        pattern: "[a-zA-ZäöüßÄÖÜ0-9\\s.,!?;:()\\[\\]\"'\\-–—\\n]"
+        pattern: "[\\p{L}\\p{N}\\s\\p{P}]"
     )
 
     private static func matches(_ regex: NSRegularExpression, _ text: String) -> Bool {
