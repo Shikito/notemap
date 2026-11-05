@@ -12,6 +12,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var model = LinkMapModel()
     @State private var showOnboarding = !OnboardingModel.hasCompletedOnboarding
+    @State private var selectedView: NotesMapPrimaryView = .map
 
     /// True wenn entweder First-Launch ODER FDA wurde nachträglich entzogen
     /// (App lief mal, dann hat der User in den Settings das Häkchen entfernt).
@@ -22,22 +23,38 @@ struct ContentView: View {
     }
 
     var body: some View {
-        ZStack {
-            if shouldShowOnboarding {
-                OnboardingView(onComplete: {
-                    showOnboarding = false
-                    // FDA wurde gerade gewährt, Build erneut anstoßen.
-                    if model.needsFullDiskAccess {
-                        model.regenerate()
-                    }
-                })
-            } else if let html = model.html {
-                WebView(html: html, baseURL: model.baseURL)
-                    .ignoresSafeArea()
-            } else if let error = model.errorMessage {
-                ErrorView(message: error, retry: { model.regenerate() })
+        Group {
+            if selectedView == .kozane {
+                KozaneView()
             } else {
-                LoadingView(message: model.statusMessage)
+                ZStack {
+                    if shouldShowOnboarding {
+                        OnboardingView(onComplete: {
+                            showOnboarding = false
+                            // FDA wurde gerade gewährt, Build erneut anstoßen.
+                            if model.needsFullDiskAccess {
+                                model.regenerate()
+                            }
+                        })
+                    } else if let html = model.html {
+                        WebView(html: html, baseURL: model.baseURL)
+                            .ignoresSafeArea()
+                    } else if let error = model.errorMessage {
+                        ErrorView(message: error, retry: { model.regenerate() })
+                    } else {
+                        LoadingView(message: model.statusMessage)
+                    }
+                }
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Picker("View", selection: $selectedView) {
+                    Text(Localized.string(\.viewMap)).tag(NotesMapPrimaryView.map)
+                    Text(Localized.string(\.viewKozane)).tag(NotesMapPrimaryView.kozane)
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 190)
             }
         }
         .task(id: shouldShowOnboarding) {
@@ -66,6 +83,11 @@ struct ContentView: View {
             model.requestPeakLabels(userInfo: info)
         }
     }
+}
+
+private enum NotesMapPrimaryView: Hashable {
+    case map
+    case kozane
 }
 
 // MARK: - LoadingView

@@ -128,7 +128,7 @@ enum LinkMapHTMLBuilder {
             hints: [.interpolation: NSImageInterpolation.high]
         )
 
-        // Weiß einfärben: das Header-Theme ist hardgecoded dunkel (#1a1a2e),
+        // Weiß einfärben: das Header-Theme ist hardgecoded dunkel (#FFFDF5),
         // also brauchen wir weiße Icons. `NSCompositingOperation.sourceIn` nimmt
         // das Alpha-Profil aus dem Symbol und ersetzt die Farbe durch die aktuelle
         // Fülle, ohne das transparente Drumherum mitzufärben.
@@ -174,8 +174,8 @@ enum LinkMapHTMLBuilder {
         html, body { height: 100%; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', system-ui, sans-serif;
-            background: #1a1a2e;
-            color: #e0e0e0;
+            background: #FFFDF5;
+            color: #1D1D1F;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -184,7 +184,7 @@ enum LinkMapHTMLBuilder {
         .card {
             padding: 40px 48px;
             background: rgba(30, 30, 55, 0.6);
-            border: 1px solid #333;
+            border: 1px solid #E3D8B7;
             border-radius: 16px;
             max-width: 560px;
         }
@@ -192,7 +192,7 @@ enum LinkMapHTMLBuilder {
         .badge {
             display: inline-block;
             padding: 3px 10px;
-            background: #4A90D9;
+            background: #D49A00;
             color: white;
             border-radius: 999px;
             font-size: 11px;
@@ -201,7 +201,7 @@ enum LinkMapHTMLBuilder {
             text-transform: uppercase;
             margin-bottom: 20px;
         }
-        p { color: #aaa; line-height: 1.6; margin-bottom: 12px; }
+        p { color: #5A5040; line-height: 1.6; margin-bottom: 12px; }
         code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
         .meta { margin-top: 24px; font-size: 11px; color: #666; font-variant-numeric: tabular-nums; }
         </style>
@@ -280,18 +280,18 @@ enum LinkMapHTMLBuilder {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', system-ui, sans-serif;
-            background: #1a1a2e;
-            color: #e0e0e0;
+            background: #FFFDF5;
+            color: #1D1D1F;
             padding: 32px 40px;
             line-height: 1.5;
         }
         h1 { font-size: 24px; margin-bottom: 4px; font-weight: 600; }
         .badge {
-            display: inline-block; padding: 3px 10px; background: #4A90D9; color: white;
+            display: inline-block; padding: 3px 10px; background: #D49A00; color: white;
             border-radius: 999px; font-size: 11px; font-weight: 600;
             letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px;
         }
-        .count { color: #4A90D9; font-size: 14px; margin-bottom: 20px; font-variant-numeric: tabular-nums; }
+        .count { color: #D49A00; font-size: 14px; margin-bottom: 20px; font-variant-numeric: tabular-nums; }
         ul { list-style: none; max-width: 860px; }
         li {
             padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -301,13 +301,13 @@ enum LinkMapHTMLBuilder {
             display: flex; justify-content: space-between; align-items: baseline;
             gap: 16px; margin-bottom: 4px;
         }
-        .row-head a { color: #e0e0e0; text-decoration: none; font-weight: 500; flex: 1; min-width: 0;
+        .row-head a { color: #1D1D1F; text-decoration: none; font-weight: 500; flex: 1; min-width: 0;
                overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .row-head a:hover { color: #4A90D9; }
+        .row-head a:hover { color: #D49A00; }
         .meta-row { color: #666; font-size: 12px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
-        .snippet { color: #888; font-size: 13px; line-height: 1.4; }
+        .snippet { color: #6C6250; font-size: 13px; line-height: 1.4; }
         .snippet.empty { color: #555; font-style: italic; }
-        .hint { color: #888; font-size: 13px; margin-top: 16px; }
+        .hint { color: #6C6250; font-size: 13px; margin-top: 16px; }
         .meta { margin-top: 24px; font-size: 11px; color: #555; font-variant-numeric: tabular-nums; }
         </style>
         </head>
@@ -470,7 +470,7 @@ enum LinkMapHTMLBuilder {
                 "id": node.uuid,
                 "title": node.title,
                 "folder": node.folderName,
-                "color": folderColors[node.folderName] ?? "#888888",
+                "color": folderColors[node.folderName] ?? "#6C6250888",
                 "incoming": node.incomingCount,
                 "outgoing": node.outgoingCount,
                 "hubScore": node.hubScore,
@@ -485,7 +485,7 @@ enum LinkMapHTMLBuilder {
             ["source": edge.sourceUuid, "target": edge.targetUuid]
         }
         let folderLegendJSON: [[String: String]] = folders.map { folder in
-            ["name": folder, "color": folderColors[folder] ?? "#888888"]
+            ["name": folder, "color": folderColors[folder] ?? "#6C6250888"]
         }
 
         // Globale Tag-Liste mit Häufigkeit. Zählt pro Notiz, nicht pro Vorkommen
@@ -545,7 +545,7 @@ enum LinkMapHTMLBuilder {
     // MARK: - Folder-Palette (21 Farben wie im TS-Projekt)
 
     private static let folderPalette: [String] = [
-        "#4A90D9", "#E67E22", "#27AE60", "#9B59B6", "#E74C3C",
+        "#D49A00", "#E67E22", "#27AE60", "#9B59B6", "#E74C3C",
         "#1ABC9C", "#F39C12", "#34495E", "#D35400", "#16A085",
         "#8E44AD", "#2ECC71", "#C0392B", "#2980B9", "#F1C40F",
         "#7F8C8D", "#E91E63", "#00BCD4", "#795548", "#607D8B",
@@ -711,21 +711,21 @@ enum LinkMapHTMLBuilder {
         <title>\#(pageTitle)</title>
         <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', system-ui, sans-serif; background: #1a1a2e; color: #e0e0e0; overflow: hidden; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', system-ui, sans-serif; background: #FFFDF5; color: #1D1D1F; overflow: hidden; }
 
-        #header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(26,26,46,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #333; padding: 10px 18px; display: flex; align-items: center; gap: 16px; height: 50px; }
+        #header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,253,245,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid #E3D8B7; padding: 10px 18px; display: flex; align-items: center; gap: 16px; height: 50px; }
         #header h1 { font-size: 15px; font-weight: 600; white-space: nowrap; }
-        #stats { font-size: 12px; color: #888; display: flex; gap: 14px; }
-        .stat-value { color: #4A90D9; font-weight: 600; }
+        #stats { font-size: 12px; color: #6C6250; display: flex; gap: 14px; }
+        .stat-value { color: #D49A00; font-weight: 600; }
 
-        #mode-toggle { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid #444; margin-left: 6px; flex-shrink: 0; }
+        #mode-toggle { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid #D8CCA4; margin-left: 6px; flex-shrink: 0; }
         /* inline-flex + nowrap stellt sicher, dass Icon und Label garantiert in einer
            Zeile bleiben und vertikal zur Mitte ausgerichtet sind. Ohne das brach das
            Inline-Img bei schmalen Buttons (z.B. „Radial 2") in eine zweite Textzeile. */
-        #mode-toggle button { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border: none; background: #2a2a4a; color: #888; font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+        #mode-toggle button { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border: none; background: #FFF3C4; color: #6C6250; font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
         #mode-toggle button img { display: block; flex-shrink: 0; }
-        #mode-toggle button.active { background: #4A90D9; color: white; }
-        #mode-toggle button:hover:not(.active) { background: #3a3a5a; color: #ccc; }
+        #mode-toggle button.active { background: #D49A00; color: white; }
+        #mode-toggle button:hover:not(.active) { background: #3a3a5a; color: #403A2E; }
         /* Progressive Collapse beim Verschmälern des Fensters. Reihenfolge: zuerst
            geht der Timestamp weg, dann die View-Labels (Icons reichen + Tooltip),
            erst ganz zum Schluss die Stats (informativste Daten zuletzt).
@@ -741,32 +741,32 @@ enum LinkMapHTMLBuilder {
             #mode-toggle button .lbl { display: none; }
         }
 
-        #btn-refresh { margin-left: 10px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #444; border-radius: 6px; background: #2a2a4a; color: #aaa; cursor: pointer; font-family: inherit; font-size: 14px; transition: all 0.15s; padding: 0; }
-        #btn-refresh:hover { color: #fff; background: #3a3a5a; border-color: #4A90D9; }
-        #btn-refresh.spinning { color: #4A90D9; pointer-events: none; }
+        #btn-refresh { margin-left: 10px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; color: #5A5040; cursor: pointer; font-family: inherit; font-size: 14px; transition: all 0.15s; padding: 0; }
+        #btn-refresh:hover { color: #fff; background: #3a3a5a; border-color: #D49A00; }
+        #btn-refresh.spinning { color: #D49A00; pointer-events: none; }
         #btn-refresh.spinning svg { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Suche im Header — schmaler Input mit Lupen-Icon. Filtert ALLE Views
            über nodeMatches() (zusammen mit Folder + Tag Filter). */
         #search-wrap { position: relative; margin-left: 8px; flex-shrink: 1; min-width: 120px; }
-        #search-input { width: 180px; max-width: 100%; padding: 5px 10px 5px 28px; border-radius: 6px; border: 1px solid #444; background: #2a2a4a; color: #e0e0e0; font-size: 12px; font-family: inherit; outline: none; transition: border-color 0.15s, background 0.15s; }
+        #search-input { width: 180px; max-width: 100%; padding: 5px 10px 5px 28px; border-radius: 6px; border: 1px solid #D8CCA4; background: #FFF3C4; color: #1D1D1F; font-size: 12px; font-family: inherit; outline: none; transition: border-color 0.15s, background 0.15s; }
         #search-input::placeholder { color: #666; }
         #search-input:hover { border-color: #555; }
-        #search-input:focus { border-color: #4A90D9; background: #2f2f55; }
+        #search-input:focus { border-color: #D49A00; background: #2f2f55; }
         #search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none; }
         #search-clear { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; display: none; align-items: center; justify-content: center; border-radius: 50%; background: #555; color: #fff; cursor: pointer; font-size: 11px; line-height: 1; padding: 0; border: none; }
         #search-wrap.has-text #search-clear { display: flex; }
         #search-clear:hover { background: #777; }
 
         /* Info-Button (ⓘ), gleicher Stil wie Refresh */
-        #btn-info { margin-left: 6px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #444; border-radius: 6px; background: #2a2a4a; color: #aaa; cursor: pointer; font-family: inherit; transition: all 0.15s; padding: 0; }
-        #btn-info:hover { color: #fff; background: #3a3a5a; border-color: #4A90D9; }
-        #btn-info.active { color: #fff; background: #4A90D9; border-color: #4A90D9; }
+        #btn-info { margin-left: 6px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; color: #5A5040; cursor: pointer; font-family: inherit; transition: all 0.15s; padding: 0; }
+        #btn-info:hover { color: #fff; background: #3a3a5a; border-color: #D49A00; }
+        #btn-info.active { color: #fff; background: #D49A00; border-color: #D49A00; }
 
         /* Instant-Tooltip, zeigt sofort bei Hover (kein native title-Delay).
            Wird in JS auf Elemente mit data-tip aufgesetzt. */
-        #instant-tooltip { position: fixed; z-index: 1000; padding: 6px 10px; background: rgba(20,20,30,0.97); color: #fff; border: 1px solid #444; border-radius: 6px; font-size: 12px; line-height: 1.4; max-width: 360px; pointer-events: none; opacity: 0; transition: opacity 0.08s; box-shadow: 0 4px 14px rgba(0,0,0,0.45); }
+        #instant-tooltip { position: fixed; z-index: 1000; padding: 6px 10px; background: rgba(20,20,30,0.97); color: #fff; border: 1px solid #D8CCA4; border-radius: 6px; font-size: 12px; line-height: 1.4; max-width: 360px; pointer-events: none; opacity: 0; transition: opacity 0.08s; box-shadow: 0 4px 14px rgba(0,0,0,0.45); }
         #instant-tooltip.visible { opacity: 1; }
 
         /* Help-Modal */
@@ -776,12 +776,12 @@ enum LinkMapHTMLBuilder {
         #help-modal-card { background: rgb(34,34,58); border: 1px solid #3a3a5a; border-radius: 16px; padding: 28px 32px; max-width: 680px; width: 100%; max-height: 100%; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.55); position: relative; animation: hm-pop 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.1); }
         @keyframes hm-pop { from { transform: scale(0.96) translateY(8px); opacity: 0 } to { transform: none; opacity: 1 } }
         #help-modal-card h2 { font-size: 20px; font-weight: 600; color: #fff; margin: 0 0 12px 0; padding-right: 32px; }
-        #help-modal-card h3 { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px 0; }
+        #help-modal-card h3 { font-size: 11px; font-weight: 700; color: #6C6250; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px 0; }
         #help-modal-card p { font-size: 13.5px; line-height: 1.55; color: #d8d8e8; margin: 0 0 6px 0; }
         #help-modal-card ul { margin: 0; padding-left: 20px; }
         #help-modal-card li { font-size: 13px; line-height: 1.5; color: #c8c8d8; margin-bottom: 5px; }
         #help-modal-card #help-tip { font-size: 13px; color: #ffcc66; background: rgba(230,160,40,0.08); border-left: 3px solid #ffcc66; padding: 10px 14px; border-radius: 4px; line-height: 1.5; }
-        #help-modal-close { position: absolute; top: 14px; right: 14px; width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.06); color: #aaa; font-size: 20px; line-height: 1; cursor: pointer; border-radius: 6px; padding: 0; transition: all 0.12s; }
+        #help-modal-close { position: absolute; top: 14px; right: 14px; width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.06); color: #5A5040; font-size: 20px; line-height: 1; cursor: pointer; border-radius: 6px; padding: 0; transition: all 0.12s; }
         #help-modal-close:hover { color: #fff; background: rgba(255,255,255,0.14); }
         #live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; margin-left: 8px; display: inline-block; box-shadow: 0 0 4px #4ade80; transition: background 0.3s, box-shadow 0.3s; }
         #live-dot.offline { background: #555; box-shadow: none; }
@@ -800,13 +800,13 @@ enum LinkMapHTMLBuilder {
         #calendar-scroll { position: absolute; inset: 0; overflow-y: auto; overflow-x: auto; padding: 24px 32px 40px 32px; }
         #graph-calendar .cal-year { margin-bottom: 28px; }
         #graph-calendar .cal-year-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; padding-right: 8px; }
-        #graph-calendar .cal-year-title { font-size: 16px; font-weight: 600; color: #e0e0e0; letter-spacing: 0.5px; }
-        #graph-calendar .cal-year-count { font-size: 12px; color: #888; font-variant-numeric: tabular-nums; }
+        #graph-calendar .cal-year-title { font-size: 16px; font-weight: 600; color: #1D1D1F; letter-spacing: 0.5px; }
+        #graph-calendar .cal-year-count { font-size: 12px; color: #6C6250; font-variant-numeric: tabular-nums; }
         #graph-calendar .cal-grid { display: grid; grid-template-columns: 28px 1fr; gap: 6px; }
         #graph-calendar .cal-weekday-col { display: grid; grid-template-rows: repeat(7, 14px); row-gap: 3px; padding-top: 18px; min-width: 26px; }
-        #graph-calendar .cal-weekday-col span { font-size: 9.5px; color: #888; line-height: 14px; text-align: right; padding-right: 6px; font-variant-caps: all-small-caps; letter-spacing: 0.3px; }
+        #graph-calendar .cal-weekday-col span { font-size: 9.5px; color: #6C6250; line-height: 14px; text-align: right; padding-right: 6px; font-variant-caps: all-small-caps; letter-spacing: 0.3px; }
         #graph-calendar .cal-month-row { display: flex; height: 14px; margin-bottom: 4px; position: relative; }
-        #graph-calendar .cal-month-row span { position: absolute; font-size: 10px; color: #888; top: 0; }
+        #graph-calendar .cal-month-row span { position: absolute; font-size: 10px; color: #6C6250; top: 0; }
         #graph-calendar .cal-week-grid { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 14px); grid-auto-columns: 14px; column-gap: 3px; row-gap: 3px; }
         #graph-calendar .cal-cell { width: 14px; height: 14px; border-radius: 3px; background: #222233; cursor: pointer; transition: transform 0.08s ease, outline-color 0.15s; outline: 1.5px solid transparent; }
         #graph-calendar .cal-cell:hover { transform: scale(1.35); outline-color: #fff; z-index: 2; position: relative; }
@@ -820,14 +820,14 @@ enum LinkMapHTMLBuilder {
         /* Schwebende Legende unten-mittig im Kalender-View (nicht mitscrollen).
            Mittig statt rechts, weil das Tag-Panel rechts unten sitzt und
            rechts-bündige Positionierung kollidiert. */
-        #calendar-legend { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #aaa; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #333; border-radius: 999px; padding: 6px 12px; pointer-events: none; z-index: 20; white-space: nowrap; }
+        #calendar-legend { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #5A5040; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; pointer-events: none; z-index: 20; white-space: nowrap; }
         #calendar-legend.visible { display: inline-flex; }
         #calendar-legend .cal-legend-swatch { width: 11px; height: 11px; border-radius: 2px; }
         #calendar-legend .cal-legend-sep { color: #555; margin: 0 4px; }
         #calendar-legend .cal-legend-max { color: #777; font-variant-numeric: tabular-nums; }
-        #calendar-tooltip { position: fixed; background: #1a1a2e; border: 1px solid #4A90D9; border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #e0e0e0; pointer-events: none; display: none; z-index: 300; max-width: 260px; line-height: 1.45; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        #calendar-tooltip { position: fixed; background: #FFFDF5; border: 1px solid #D49A00; border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #1D1D1F; pointer-events: none; display: none; z-index: 300; max-width: 260px; line-height: 1.45; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
         #calendar-tooltip .tt-date { font-weight: 600; color: #fff; margin-bottom: 3px; }
-        #calendar-tooltip .tt-count { color: #4A90D9; margin-bottom: 3px; font-variant-numeric: tabular-nums; }
+        #calendar-tooltip .tt-count { color: #D49A00; margin-bottom: 3px; font-variant-numeric: tabular-nums; }
         #calendar-tooltip .tt-titles { color: #bbb; font-size: 10.5px; }
         /* Day-Panel (Liste der Notizen eines Tages, Klick öffnet applenotes:) */
         /* top/bottom anchored statt max-height, damit das Panel nie ins
@@ -835,24 +835,24 @@ enum LinkMapHTMLBuilder {
            ~36px hoch → reicht bis bottom:116. Mit bottom:140 bleibt
            ~24px Luft. Bei voll expandierten TAGS (max-height 100vh-180)
            gibt's noch Overlap, aber dann kollabiert der User halt TAGS. */
-        #day-panel { position: fixed; top: 60px; right: 16px; bottom: 140px; width: 340px; background: rgba(30,30,55,0.97); backdrop-filter: blur(10px); border: 1px solid #444; border-radius: 12px; padding: 16px; display: none; z-index: 50; flex-direction: column; }
+        #day-panel { position: fixed; top: 60px; right: 16px; bottom: 140px; width: 340px; background: rgba(30,30,55,0.97); backdrop-filter: blur(10px); border: 1px solid #D8CCA4; border-radius: 12px; padding: 16px; display: none; z-index: 50; flex-direction: column; }
         #day-panel.visible { display: flex; }
         #day-panel h2 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #fff; }
-        #day-panel-meta { font-size: 12px; color: #888; margin-bottom: 12px; }
+        #day-panel-meta { font-size: 12px; color: #6C6250; margin-bottom: 12px; }
         #day-panel-list { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        #day-panel-list a { display: block; padding: 8px 10px; border-radius: 6px; background: rgba(255,255,255,0.04); color: #e0e0e0; text-decoration: none; font-size: 12.5px; line-height: 1.35; border-left: 3px solid #4A90D9; transition: background 0.12s; }
+        #day-panel-list a { display: block; padding: 8px 10px; border-radius: 6px; background: rgba(255,255,255,0.04); color: #1D1D1F; text-decoration: none; font-size: 12.5px; line-height: 1.35; border-left: 3px solid #D49A00; transition: background 0.12s; }
         #day-panel-list a:hover { background: rgba(74,144,217,0.18); }
-        #day-panel-list a .dp-folder { display: block; font-size: 10.5px; color: #888; margin-top: 2px; }
-        #day-panel-close { position: absolute; top: 8px; right: 10px; width: 24px; height: 24px; border: none; background: transparent; color: #888; font-size: 20px; line-height: 1; cursor: pointer; border-radius: 4px; padding: 0; }
+        #day-panel-list a .dp-folder { display: block; font-size: 10.5px; color: #6C6250; margin-top: 2px; }
+        #day-panel-close { position: absolute; top: 8px; right: 10px; width: 24px; height: 24px; border: none; background: transparent; color: #6C6250; font-size: 20px; line-height: 1; cursor: pointer; border-radius: 4px; padding: 0; }
         #day-panel-close:hover { color: #fff; background: rgba(255,255,255,0.08); }
         /* --- Monthly-Heatmap (Jahre × Monate) --- */
         #graph-monthly { overflow: hidden; }
         #monthly-scroll { position: absolute; inset: 0; overflow-y: auto; overflow-x: auto; padding: 40px 48px; display: flex; align-items: center; justify-content: center; }
         #graph-monthly .mo-wrap { display: inline-block; }
         #graph-monthly .mo-grid { display: grid; grid-template-columns: 58px repeat(12, 54px); grid-auto-rows: 40px; column-gap: 6px; row-gap: 6px; align-items: center; }
-        #graph-monthly .mo-header { font-size: 11px; color: #888; text-align: center; font-variant-caps: all-small-caps; letter-spacing: 0.5px; padding-bottom: 4px; }
+        #graph-monthly .mo-header { font-size: 11px; color: #6C6250; text-align: center; font-variant-caps: all-small-caps; letter-spacing: 0.5px; padding-bottom: 4px; }
         #graph-monthly .mo-corner { }
-        #graph-monthly .mo-year-label { font-size: 13px; font-weight: 600; color: #e0e0e0; text-align: right; padding-right: 10px; letter-spacing: 0.3px; font-variant-numeric: tabular-nums; }
+        #graph-monthly .mo-year-label { font-size: 13px; font-weight: 600; color: #1D1D1F; text-align: right; padding-right: 10px; letter-spacing: 0.3px; font-variant-numeric: tabular-nums; }
         #graph-monthly .mo-cell { background: #222233; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.78); transition: transform 0.08s ease, outline-color 0.15s; outline: 1.5px solid transparent; font-variant-numeric: tabular-nums; }
         #graph-monthly .mo-cell:hover { transform: scale(1.08); outline-color: #fff; z-index: 2; position: relative; }
         #graph-monthly .mo-cell.selected { outline-color: #ffcc66; transform: scale(1.08); z-index: 2; position: relative; }
@@ -868,15 +868,15 @@ enum LinkMapHTMLBuilder {
            Höher positioniert als 16px, um Konflikt mit ORDNER-Panel zu vermeiden. */
         #monthly-bottom-bar { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; z-index: 21; pointer-events: none; }
         #monthly-bottom-bar > * { pointer-events: auto; }
-        #monthly-legend { display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #aaa; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #333; border-radius: 999px; padding: 6px 12px; white-space: nowrap; pointer-events: none; }
+        #monthly-legend { display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #5A5040; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; white-space: nowrap; pointer-events: none; }
         #monthly-legend.visible { display: inline-flex; }
         #monthly-legend .cal-legend-swatch { width: 11px; height: 11px; border-radius: 2px; }
         #monthly-legend .cal-legend-sep { color: #555; margin: 0 4px; }
         #monthly-legend .cal-legend-max { color: #777; font-variant-numeric: tabular-nums; }
         /* Toggle-Button: Zahlen in Zellen ein/aus. */
-        #monthly-toggle-numbers { font-size: 11px; color: #ccc; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #333; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
-        #monthly-toggle-numbers:hover { border-color: #4A90D9; color: #fff; }
-        #monthly-toggle-numbers.off { color: #888; }
+        #monthly-toggle-numbers { font-size: 11px; color: #403A2E; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+        #monthly-toggle-numbers:hover { border-color: #D49A00; color: #fff; }
+        #monthly-toggle-numbers.off { color: #6C6250; }
         /* Wenn Klasse `.numbers-hidden` am #graph-monthly: alle Zell-Texte transparent.
            Layout bleibt identisch (flex-center mit leerem "Text" behält die Zellgröße). */
         #graph-monthly.numbers-hidden .mo-cell { color: transparent; }
@@ -935,19 +935,19 @@ enum LinkMapHTMLBuilder {
             opacity: 0.75;
             border-color: rgba(255, 170, 120, 0.55);
         }
-        #heightmap-svg circle { cursor: pointer; stroke: #1a1a28; stroke-width: 0.5px; transition: stroke 0.12s, stroke-width 0.12s; }
+        #heightmap-svg circle { cursor: pointer; stroke: #F2E8CC; stroke-width: 0.5px; transition: stroke 0.12s, stroke-width 0.12s; }
         #heightmap-svg circle:hover { stroke: #fff; stroke-width: 1.5px; }
         #heightmap-svg circle.hm-dim { opacity: 0.15; pointer-events: none; }
-        #heightmap-tooltip { position: fixed; background: #1a1a2e; border: 1px solid #4A90D9; border-radius: 6px; padding: 7px 11px; font-size: 11.5px; color: #e0e0e0; pointer-events: none; display: none; z-index: 300; max-width: 340px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); }
+        #heightmap-tooltip { position: fixed; background: #FFFDF5; border: 1px solid #D49A00; border-radius: 6px; padding: 7px 11px; font-size: 11.5px; color: #1D1D1F; pointer-events: none; display: none; z-index: 300; max-width: 340px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); }
         #heightmap-tooltip .hm-tt-title { font-weight: 600; margin-bottom: 3px; color: #fff; }
-        #heightmap-tooltip .hm-tt-meta { font-size: 10.5px; color: #888; font-variant-numeric: tabular-nums; }
+        #heightmap-tooltip .hm-tt-meta { font-size: 10.5px; color: #6C6250; font-variant-numeric: tabular-nums; }
         #heightmap-bottom-bar { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; align-items: center; z-index: 21; pointer-events: none; }
         #heightmap-bottom-bar > * { pointer-events: auto; }
-        #heightmap-bottom-bar .heightmap-sort-group { display: flex; gap: 2px; align-items: center; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #333; border-radius: 999px; padding: 4px 8px; font-size: 11px; color: #aaa; }
+        #heightmap-bottom-bar .heightmap-sort-group { display: flex; gap: 2px; align-items: center; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 4px 8px; font-size: 11px; color: #5A5040; }
         #heightmap-bottom-bar .heightmap-sort-label { color: #777; margin-right: 4px; font-variant-caps: all-small-caps; letter-spacing: 0.5px; }
-        #heightmap-bottom-bar .heightmap-sort-group button { font-size: 11px; color: #ccc; background: transparent; border: none; border-radius: 999px; padding: 4px 10px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+        #heightmap-bottom-bar .heightmap-sort-group button { font-size: 11px; color: #403A2E; background: transparent; border: none; border-radius: 999px; padding: 4px 10px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
         #heightmap-bottom-bar .heightmap-sort-group button:hover { color: #fff; background: rgba(255,255,255,0.06); }
-        #heightmap-bottom-bar .heightmap-sort-group button.active { color: #fff; background: #4A90D9; font-weight: 600; }
+        #heightmap-bottom-bar .heightmap-sort-group button.active { color: #fff; background: #D49A00; font-weight: 600; }
         /* Peak-Count-Slider-Pill, selbes Pill-Chrome wie die Button-Gruppen, aber
            mit einer nativen range-Input in der Mitte. Die Webkit-Thumb-Farbe
            matched den aktiven Button-Hintergrund. */
@@ -971,11 +971,11 @@ enum LinkMapHTMLBuilder {
             appearance: none;
             width: 12px;
             height: 12px;
-            background: #4A90D9;
+            background: #D49A00;
             border-radius: 50%;
             margin-top: -4.5px;
             cursor: pointer;
-            border: 2px solid rgba(26,26,46,0.95);
+            border: 2px solid rgba(255,253,245,0.96);
         }
         #heightmap-bottom-bar .heightmap-slider-group .heightmap-slider-value {
             color: #fff;
@@ -985,103 +985,103 @@ enum LinkMapHTMLBuilder {
             text-align: right;
             font-size: 11px;
         }
-        #heightmap-contour-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #aaa; cursor: pointer; user-select: none; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #333; border-radius: 999px; padding: 6px 12px; }
+        #heightmap-contour-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #5A5040; cursor: pointer; user-select: none; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; }
         #heightmap-contour-toggle:hover { color: #fff; }
-        #heightmap-contour-toggle input { cursor: pointer; accent-color: #4A90D9; }
-        #heightmap-legend { display: none; align-items: center; gap: 4px; font-size: 10.5px; color: #aaa; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #333; border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+        #heightmap-contour-toggle input { cursor: pointer; accent-color: #D49A00; }
+        #heightmap-legend { display: none; align-items: center; gap: 4px; font-size: 10.5px; color: #5A5040; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
         #heightmap-legend.visible { display: inline-flex; }
         #heightmap-legend .hm-legend-grad { width: 80px; height: 8px; border-radius: 2px; }
-        #heightmap-legend .hm-legend-cap { font-variant-numeric: tabular-nums; color: #ccc; }
+        #heightmap-legend .hm-legend-cap { font-variant-numeric: tabular-nums; color: #403A2E; }
         #heightmap-overlay { position: absolute; inset: 0; background: rgba(20,20,35,0.94); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 50; transition: opacity 0.3s; }
         #heightmap-overlay.hidden { opacity: 0; pointer-events: none; }
         #heightmap-overlay-inner { max-width: 460px; padding: 28px 32px; text-align: center; background: rgba(26,26,46,0.9); border: 1px solid #3a3a5a; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
-        #heightmap-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #e0e0e0; }
-        #heightmap-message { font-size: 12.5px; color: #aaa; line-height: 1.55; margin-bottom: 18px; }
-        #heightmap-progress-bar { width: 100%; height: 6px; background: #2a2a4a; border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
-        #heightmap-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4A90D9, #8dc5ff); transition: width 0.25s; }
+        #heightmap-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #1D1D1F; }
+        #heightmap-message { font-size: 12.5px; color: #5A5040; line-height: 1.55; margin-bottom: 18px; }
+        #heightmap-progress-bar { width: 100%; height: 6px; background: #FFF3C4; border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+        #heightmap-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #D49A00, #8dc5ff); transition: width 0.25s; }
         #heightmap-detail { font-size: 11px; color: #777; font-variant-numeric: tabular-nums; min-height: 14px; }
         #heightmap-overlay.error #heightmap-progress-bar { background: #4a2a2a; }
         #heightmap-overlay.error #heightmap-progress-fill { background: #e05454; width: 100% !important; }
         #heightmap-overlay.error #heightmap-title { color: #e05454; }
 
         /* Circos-spezifische Styles */
-        #graph-circos .folder-arc { stroke: #1a1a28; stroke-width: 1px; cursor: pointer; transition: opacity 0.2s; }
+        #graph-circos .folder-arc { stroke: #F2E8CC; stroke-width: 1px; cursor: pointer; transition: opacity 0.2s; }
         #graph-circos .folder-arc:hover { opacity: 0.85; }
-        #graph-circos .folder-label { fill: #aaa; font-size: 10px; font-family: -apple-system, sans-serif; pointer-events: none; }
+        #graph-circos .folder-label { fill: #5A5040; font-size: 10px; font-family: -apple-system, sans-serif; pointer-events: none; }
         #graph-circos .note-tick { cursor: pointer; }
         #graph-circos .note-tick.dim { opacity: 0.18; }
         #graph-circos .note-tick.hot { stroke: #fff; stroke-width: 1.5px; }
-        #graph-circos .link-arc { fill: none; stroke: #4A90D9; stroke-opacity: 0.22; stroke-width: 0.8px; pointer-events: none; transition: stroke-opacity 0.2s, stroke-width 0.2s; }
+        #graph-circos .link-arc { fill: none; stroke: #D49A00; stroke-opacity: 0.22; stroke-width: 0.8px; pointer-events: none; transition: stroke-opacity 0.2s, stroke-width 0.2s; }
         #graph-circos .link-arc.dim { stroke-opacity: 0.04; }
         #graph-circos .link-arc.hot { stroke: #ffcc66; stroke-opacity: 0.95; stroke-width: 1.4px; }
 
         .link { stroke: #667; stroke-opacity: 0.45; stroke-width: 1px; }
         .link.dimmed { stroke-opacity: 0.08; }
-        .link.highlighted { stroke: #4A90D9; stroke-opacity: 0.9; stroke-width: 1.8px; }
+        .link.highlighted { stroke: #D49A00; stroke-opacity: 0.9; stroke-width: 1.8px; }
 
-        .node circle { stroke: #1a1a2e; stroke-width: 1.5px; cursor: pointer; transition: stroke-width 0.15s; }
+        .node circle { stroke: #FFFDF5; stroke-width: 1.5px; cursor: pointer; transition: stroke-width 0.15s; }
         .node.highlighted circle { stroke: #fff; stroke-width: 2.5px; }
-        .node.selected circle { stroke: #4A90D9; stroke-width: 3px; }
+        .node.selected circle { stroke: #D49A00; stroke-width: 3px; }
         .node.dimmed { opacity: 0.15; }
         .node-label { font-size: 10px; fill: #ddd; pointer-events: none; text-anchor: middle; font-family: inherit; }
 
         /* --- Panel rechts --- */
-        #panel { position: fixed; top: 60px; right: 16px; width: 320px; background: rgba(30,30,55,0.97); backdrop-filter: blur(10px); border: 1px solid #444; border-radius: 12px; padding: 16px; display: none; z-index: 50; max-height: calc(100vh - 150px); flex-direction: column; }
+        #panel { position: fixed; top: 60px; right: 16px; width: 320px; background: rgba(30,30,55,0.97); backdrop-filter: blur(10px); border: 1px solid #D8CCA4; border-radius: 12px; padding: 16px; display: none; z-index: 50; max-height: calc(100vh - 150px); flex-direction: column; }
         #panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
-        #panel .meta { font-size: 12px; color: #888; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        #panel .meta { font-size: 12px; color: #6C6250; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         #panel .link-counts { display: flex; gap: 14px; margin-bottom: 10px; }
-        #panel .link-count { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #aaa; }
-        #panel .link-count .num { font-weight: 700; font-size: 16px; color: #e0e0e0; }
-        #panel .link-count.incoming .arrow { color: #4A90D9; }
+        #panel .link-count { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #5A5040; }
+        #panel .link-count .num { font-weight: 700; font-size: 16px; color: #1D1D1F; }
+        #panel .link-count.incoming .arrow { color: #D49A00; }
         #panel .link-count.outgoing .arrow { color: #E67E22; }
-        #panel-snippet { font-size: 13px; color: #bbb; line-height: 1.55; flex: 1; overflow-y: auto; border-top: 1px solid #333; padding-top: 10px; white-space: pre-wrap; word-break: break-word; max-height: 380px; }
-        #panel .btn { display: block; text-align: center; margin-top: 10px; padding: 8px 14px; border-radius: 8px; background: #4A90D9; color: white; text-decoration: none; font-size: 13px; font-weight: 500; }
+        #panel-snippet { font-size: 13px; color: #bbb; line-height: 1.55; flex: 1; overflow-y: auto; border-top: 1px solid #E3D8B7; padding-top: 10px; white-space: pre-wrap; word-break: break-word; max-height: 380px; }
+        #panel .btn { display: block; text-align: center; margin-top: 10px; padding: 8px 14px; border-radius: 8px; background: #D49A00; color: white; text-decoration: none; font-size: 13px; font-weight: 500; }
         #panel .btn:hover { background: #357ABD; }
-        #panel-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; line-height: 1; padding: 4px 8px; }
+        #panel-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: #6C6250; font-size: 18px; cursor: pointer; line-height: 1; padding: 4px 8px; }
         #panel-close:hover { color: #fff; }
 
         /* --- Ordner-Legende --- */
-        #legend { position: fixed; bottom: 80px; left: 14px; background: rgb(30,30,55); border: 1px solid #444; border-radius: 10px; z-index: 50; max-height: calc(100vh - 180px); display: flex; flex-direction: column; width: 220px; }
+        #legend { position: fixed; bottom: 80px; left: 14px; background: rgb(255, 250, 232); border: 1px solid #D8CCA4; border-radius: 10px; z-index: 50; max-height: calc(100vh - 180px); display: flex; flex-direction: column; width: 220px; }
         #legend-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; cursor: pointer; user-select: none; }
         #legend-header:hover { background: rgba(255,255,255,0.04); border-radius: 10px; }
-        #legend.expanded #legend-header { border-bottom: 1px solid #333; border-radius: 10px 10px 0 0; }
-        #legend h3 { font-size: 11px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        #legend.expanded #legend-header { border-bottom: 1px solid #E3D8B7; border-radius: 10px 10px 0 0; }
+        #legend h3 { font-size: 11px; color: #5A5040; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
         #legend-summary { font-size: 10px; color: #666; }
-        #legend.has-selection #legend-summary { color: #4A90D9; font-weight: 600; }
+        #legend.has-selection #legend-summary { color: #D49A00; font-weight: 600; }
         #legend-clear { display: none; font-size: 14px; color: #E67E22; cursor: pointer; margin-left: 6px; line-height: 1; font-weight: 700; }
         #legend-clear:hover { color: #ff9844; }
         #legend.has-selection #legend-clear { display: inline-block; }
-        #legend-toggle { font-size: 10px; color: #888; transition: transform 0.2s; }
+        #legend-toggle { font-size: 10px; color: #6C6250; transition: transform 0.2s; }
         #legend.expanded #legend-toggle { transform: rotate(180deg); }
         #legend-body { padding: 4px 10px 10px 10px; overflow-y: auto; display: none; }
         #legend.expanded #legend-body { display: block; }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; padding: 3px 6px; color: #ccc; cursor: pointer; border-radius: 4px; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; padding: 3px 6px; color: #403A2E; cursor: pointer; border-radius: 4px; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .legend-item:hover { opacity: 1; color: white; background: rgba(255,255,255,0.04); }
         .legend-item.active { opacity: 1; color: white; font-weight: 600; background: rgba(74,144,217,0.15); }
         .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
         .legend-item span.count { color: #666; font-size: 10px; margin-left: auto; padding-left: 4px; }
 
         /* --- Tag-Panel (Spiegel der Ordner-Legende, rechts) --- */
-        #tag-panel { position: fixed; bottom: 80px; right: 14px; background: rgb(30,30,55); border: 1px solid #444; border-radius: 10px; z-index: 50; max-height: calc(100vh - 180px); display: flex; flex-direction: column; width: 220px; }
+        #tag-panel { position: fixed; bottom: 80px; right: 14px; background: rgb(255, 250, 232); border: 1px solid #D8CCA4; border-radius: 10px; z-index: 50; max-height: calc(100vh - 180px); display: flex; flex-direction: column; width: 220px; }
         #tag-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; cursor: pointer; user-select: none; }
         #tag-panel-header:hover { background: rgba(255,255,255,0.04); border-radius: 10px; }
-        #tag-panel.expanded #tag-panel-header { border-bottom: 1px solid #333; border-radius: 10px 10px 0 0; }
-        #tag-panel h3 { font-size: 11px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        #tag-panel.expanded #tag-panel-header { border-bottom: 1px solid #E3D8B7; border-radius: 10px 10px 0 0; }
+        #tag-panel h3 { font-size: 11px; color: #5A5040; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
         #tag-panel-summary { font-size: 10px; color: #666; }
-        #tag-panel.has-selection #tag-panel-summary { color: #4A90D9; font-weight: 600; }
+        #tag-panel.has-selection #tag-panel-summary { color: #D49A00; font-weight: 600; }
         #tag-panel-clear { display: none; font-size: 14px; color: #E67E22; cursor: pointer; margin-left: 6px; line-height: 1; font-weight: 700; }
         #tag-panel-clear:hover { color: #ff9844; }
         #tag-panel.has-selection #tag-panel-clear { display: inline-block; }
-        #tag-panel-toggle { font-size: 10px; color: #888; transition: transform 0.2s; }
+        #tag-panel-toggle { font-size: 10px; color: #6C6250; transition: transform 0.2s; }
         #tag-panel.expanded #tag-panel-toggle { transform: rotate(180deg); }
         #tag-panel-body { padding: 4px 10px 10px 10px; overflow-y: auto; display: none; }
         #tag-panel.expanded #tag-panel-body { display: block; }
         #tag-panel-empty { font-size: 11px; color: #666; padding: 6px 8px; font-style: italic; }
-        .tag-item { display: flex; align-items: center; gap: 8px; font-size: 11px; padding: 3px 6px; color: #ccc; cursor: pointer; border-radius: 4px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tag-item { display: flex; align-items: center; gap: 8px; font-size: 11px; padding: 3px 6px; color: #403A2E; cursor: pointer; border-radius: 4px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .tag-item:hover { opacity: 1; color: white; background: rgba(255,255,255,0.04); }
         .tag-item.active { opacity: 1; color: white; font-weight: 600; background: rgba(74,144,217,0.15); }
         .tag-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; background: #666; }
-        .tag-item.active .tag-dot { background: #4A90D9; }
+        .tag-item.active .tag-dot { background: #D49A00; }
         .tag-item span.tag-name { overflow: hidden; text-overflow: ellipsis; }
         .tag-item span.count { color: #666; font-size: 10px; margin-left: auto; padding-left: 4px; }
 
@@ -1098,7 +1098,7 @@ enum LinkMapHTMLBuilder {
         }
 
         /* --- Timeline unten --- */
-        #timeline { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: rgba(26,26,46,0.95); backdrop-filter: blur(10px); border-top: 1px solid #333; padding: 8px 18px 10px 18px; display: flex; align-items: center; gap: 14px; height: 70px; }
+        #timeline { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: rgba(255,253,245,0.96); backdrop-filter: blur(10px); border-top: 1px solid #E3D8B7; padding: 8px 18px 10px 18px; display: flex; align-items: center; gap: 14px; height: 70px; }
         /* Timeline ausblenden in Views, in denen sie keinen Sinn ergibt:
            - Calendar/Monthly: die Views SIND eine Timeline (doppelt gemoppelt)
            - Heightmap: basiert auf Embeddings, Zeitfilter würde Re-Compute triggern */
@@ -1117,17 +1117,17 @@ enum LinkMapHTMLBuilder {
         body[data-mode="3d"] #legend,
         body[data-mode="2d"][data-layout="force"] #tag-panel,
         body[data-mode="3d"] #tag-panel { bottom: 80px; }
-        #play-btn { width: 34px; height: 34px; border-radius: 50%; background: #4A90D9; border: none; color: white; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #play-btn { width: 34px; height: 34px; border-radius: 50%; background: #D49A00; border: none; color: white; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         #play-btn:hover { background: #357ABD; }
         #play-btn.playing { background: #E67E22; }
-        #time-label { font-size: 13px; color: #e0e0e0; font-weight: 600; min-width: 110px; text-align: center; font-variant-numeric: tabular-nums; }
+        #time-label { font-size: 13px; color: #1D1D1F; font-weight: 600; min-width: 110px; text-align: center; font-variant-numeric: tabular-nums; }
         #slider-wrap { flex: 1; display: flex; flex-direction: column; gap: 2px; position: relative; }
         #heatmap-container { position: relative; height: 28px; cursor: pointer; }
         #heatmap-canvas { display: block; width: 100%; height: 100%; }
-        #heatmap-tooltip { position: absolute; background: #1a1a2e; border: 1px solid #4A90D9; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #e0e0e0; pointer-events: none; white-space: nowrap; display: none; z-index: 101; transform: translate(-50%, -120%); }
-        #time-slider { width: 100%; margin: 0; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: #333; outline: none; cursor: pointer; }
-        #time-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #4A90D9; cursor: pointer; border: 2px solid white; }
-        #time-counter { font-size: 12px; color: #888; min-width: 80px; text-align: right; font-variant-numeric: tabular-nums; }
+        #heatmap-tooltip { position: absolute; background: #FFFDF5; border: 1px solid #D49A00; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #1D1D1F; pointer-events: none; white-space: nowrap; display: none; z-index: 101; transform: translate(-50%, -120%); }
+        #time-slider { width: 100%; margin: 0; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: #E3D8B7; outline: none; cursor: pointer; }
+        #time-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #D49A00; cursor: pointer; border: 2px solid white; }
+        #time-counter { font-size: 12px; color: #6C6250; min-width: 80px; text-align: right; font-variant-numeric: tabular-nums; }
         </style>
         </head>
         <body>
@@ -1991,7 +1991,7 @@ enum LinkMapHTMLBuilder {
                     nodes: nodes3d,
                     links: data.edges.map(e => ({ source: e.source, target: e.target }))
                 })
-                .backgroundColor('#1a1a2e')
+                .backgroundColor('#FFFDF5')
                 .nodeVal(n => {
                     let base;
                     if (!nodeMatches(n)) base = 0.3;
@@ -2291,8 +2291,8 @@ enum LinkMapHTMLBuilder {
                     const t = Math.min(1, hs / maxHubLocal);
                     return 3 + 13 * t;
                 })
-                .attr('fill', n => n.color || '#888')
-                .attr('stroke', '#1a1a28').attr('stroke-width', 0.3)
+                .attr('fill', n => n.color || '#6C6250')
+                .attr('stroke', '#F2E8CC').attr('stroke-width', 0.3)
                 .attr('transform', n => {
                     const a = nodePosAngle[n.id];
                     if (a == null) return null;
@@ -2566,7 +2566,7 @@ enum LinkMapHTMLBuilder {
             }
 
             if (!isFinite(minMs)) {
-                scroll.innerHTML = '<div style="color:#888;font-size:13px;padding:12px;">' + ((window.NM_LOC && window.NM_LOC.noNotesWithDate) || 'No notes with a known creation date.') + '</div>';
+                scroll.innerHTML = '<div style="color:#6C6250;font-size:13px;padding:12px;">' + ((window.NM_LOC && window.NM_LOC.noNotesWithDate) || 'No notes with a known creation date.') + '</div>';
                 return;
             }
 
@@ -2814,7 +2814,7 @@ enum LinkMapHTMLBuilder {
                 const hh = String(time.getHours()).padStart(2, '0');
                 const mm = String(time.getMinutes()).padStart(2, '0');
                 a.innerHTML =
-                    '<span style="color:#888;font-variant-numeric:tabular-nums;margin-right:6px;">' + hh + ':' + mm + '</span>' +
+                    '<span style="color:#6C6250;font-variant-numeric:tabular-nums;margin-right:6px;">' + hh + ':' + mm + '</span>' +
                     escapeHTML(n.title || ((window.NM_LOC && window.NM_LOC.noTitle) || '(no title)')) +
                     '<span class="dp-folder">' + escapeHTML(n.folder || '') + '</span>';
                 list.appendChild(a);
@@ -2892,7 +2892,7 @@ enum LinkMapHTMLBuilder {
             }
 
             if (!isFinite(minMs)) {
-                scroll.innerHTML = '<div style="color:#888;font-size:13px;padding:12px;">' + ((window.NM_LOC && window.NM_LOC.noNotesWithDate) || 'No notes with a known creation date.') + '</div>';
+                scroll.innerHTML = '<div style="color:#6C6250;font-size:13px;padding:12px;">' + ((window.NM_LOC && window.NM_LOC.noNotesWithDate) || 'No notes with a known creation date.') + '</div>';
                 const lg = document.getElementById('monthly-legend');
                 if (lg) lg.classList.remove('visible');
                 return;
@@ -3045,7 +3045,7 @@ enum LinkMapHTMLBuilder {
                 const dd = String(time.getDate()).padStart(2, '0');
                 const mm = String(time.getMonth() + 1).padStart(2, '0');
                 a.innerHTML =
-                    '<span style="color:#888;font-variant-numeric:tabular-nums;margin-right:6px;">' + dd + '.' + mm + '.</span>' +
+                    '<span style="color:#6C6250;font-variant-numeric:tabular-nums;margin-right:6px;">' + dd + '.' + mm + '.</span>' +
                     escapeHTML(n.title || ((window.NM_LOC && window.NM_LOC.noTitle) || '(no title)')) +
                     '<span class="dp-folder">' + escapeHTML(n.folder || '') + '</span>';
                 list.appendChild(a);
@@ -3451,7 +3451,7 @@ enum LinkMapHTMLBuilder {
         // Min/Max-Labels ausgewertet.
         function heightmapFillFor(node, ctx) {
             if (heightmapState.colorMode === 'folder') {
-                return ctx.folderColor[node.folder] || '#888';
+                return ctx.folderColor[node.folder] || '#6C6250';
             }
             if (heightmapState.colorMode === 'hub') {
                 // hubScore ∈ [0, max]. Interpoliere viridis.
@@ -3687,7 +3687,7 @@ enum LinkMapHTMLBuilder {
             tt.innerHTML =
                 '<div class="hm-tt-title">' + escapeHTML(node.title || '') + '</div>' +
                 '<div>' + escapeHTML(node.folder || '') + '</div>' +
-                (snippet ? '<div class="hm-tt-meta" style="margin-top:4px;color:#aaa">' + escapeHTML(snippet) + (node.snippet && node.snippet.length > 180 ? '…' : '') + '</div>' : '') +
+                (snippet ? '<div class="hm-tt-meta" style="margin-top:4px;color:#5A5040">' + escapeHTML(snippet) + (node.snippet && node.snippet.length > 180 ? '…' : '') + '</div>' : '') +
                 '<div class="hm-tt-meta" style="margin-top:4px">Hub ' + hub + ' · In ' + (node.incoming || 0) + ' · Out ' + (node.outgoing || 0) + '</div>';
             tt.style.display = 'block';
             moveHeightmapTooltip(ev);
@@ -4378,8 +4378,8 @@ enum LinkMapHTMLBuilder {
             const ch = Math.max(10, container.clientHeight);
 
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x10101e);
-            scene.fog = new THREE.Fog(0x10101e, 600, 1800);
+            scene.background = new THREE.Color(0xfffdf5);
+            scene.fog = new THREE.Fog(0xfffdf5, 600, 1800);
 
             const camera = new THREE.PerspectiveCamera(40, cw / ch, 0.5, 3000);
 
@@ -6107,7 +6107,7 @@ enum LinkMapHTMLBuilder {
                     .transition().duration(300).attr('r', origR * 1.4)
                     .transition().duration(300).attr('r', peakR * 0.9)
                     .transition().duration(500).attr('r', origR)
-                    .attr('stroke', '#1a1a2e').attr('stroke-width', 1.5);
+                    .attr('stroke', '#FFFDF5').attr('stroke-width', 1.5);
             }
 
             // 3D-Pulse, via pulseExpire + Ticker

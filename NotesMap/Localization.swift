@@ -129,6 +129,8 @@ struct Localized {
     let helpReportBug: T2 = ("Fehler melden", "Report a Bug")
     let helpOpenRepo: T2 = ("Quellcode auf GitHub", "Source on GitHub")
     let helpOpenLicense: T2 = ("Lizenz öffnen", "Open License")
+    let viewMap: T2 = ("Karte", "Map")
+    let viewKozane: T2 = ("Kozane", "Kozane")
 
     let errorTitle: T2 = ("Konnte Notizen nicht laden", "Couldn't load notes")
     let errorRetry: T2 = ("Erneut versuchen", "Retry")

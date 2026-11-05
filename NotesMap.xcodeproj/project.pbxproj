@@ -115,6 +115,14 @@
 		FEDBEC61BBB5E6C83A62D2BB /* NoteStoreDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStoreDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		99F82993309CC2A800979760 /* Kozane */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Kozane;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		83F11C572E6996A9C5FD483F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -227,6 +235,7 @@
 				C6793A2E852ACC7CE890EC56 /* Localization.swift */,
 				9E2CC55E581CFB2652BE608C /* NotesMapApp.swift */,
 				6DEF1E48BF75D5751142E83B /* ViewHelp.swift */,
+				99F82993309CC2A800979760 /* Kozane */,
 			);
 			path = NotesMap;
 			sourceTree = "<group>";
@@ -283,6 +292,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				99F82993309CC2A800979760 /* Kozane */,
 			);
 			name = NotesMap;
 			packageProductDependencies = (

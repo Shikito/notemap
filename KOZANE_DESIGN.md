@@ -10,7 +10,7 @@ Kozane lets a person think with many Apple Notes at once without turning Apple N
 Apple Notes remains the source of truth. Kozane stores its own short cards, arrangements, and references to source notes.
 
 ```text
-Question / theme
+Start writing a draft
   ↓
 Write or extract small kozane
   ↓
@@ -44,9 +44,9 @@ References:
 
 ### Start
 
-1. The person writes a question or theme.
+1. The person opens a draft and begins writing a first kozane.
 2. Kozane opens an empty work surface and a source rail.
-3. The person writes a first kozane, or explicitly extracts a short passage from a source note.
+3. The person writes another kozane, or explicitly extracts a short passage from a source note.
 4. The person places, moves, removes, and rewrites cards until a line of thought appears.
 5. The arrangement is saved as a bundle when wanted. Saving never asserts that the arrangement is final.
 
@@ -90,7 +90,7 @@ Typing and card movement must never wait for a network request. Stale requests a
 
 The initial source rail balances:
 
-- semantic similarity to the active question or selected kozane;
+- semantic similarity to the active draft text or selected kozane;
 - explicit Apple Notes links;
 - existing kozane already used in the current bundle;
 - diversity, so one repeated kind of note does not occupy every suggestion.
@@ -107,7 +107,7 @@ Kozane uses a separate local database under NoteMap's Application Support direct
 
 | Record | Core data |
 |---|---|
-| Bundle | ID, title/question, timestamps, viewport |
+| Bundle | ID, optional title, timestamps, viewport |
 | Kozane | ID, text, optional source Apple Note UUID, optional source excerpt/hash, timestamps |
 | Placement | bundle ID, kozane ID, x/y/size/z-index |
 | Source reference | kozane ID, Apple Note UUID, source excerpt/hash |
@@ -148,7 +148,7 @@ Not in the first version:
 
 ### Phase 1 — Manual card surface
 
-- Create/open a bundle with a question.
+- Create/open a bundle for a draft.
 - Add hand-written kozane.
 - Drag, zoom, select, delete, and save placements.
 - Reopen the same arrangement.
