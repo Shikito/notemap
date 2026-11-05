@@ -128,11 +128,10 @@ enum LinkMapHTMLBuilder {
             hints: [.interpolation: NSImageInterpolation.high]
         )
 
-        // Weiß einfärben: das Header-Theme ist hardgecoded dunkel (#FFFDF5),
-        // also brauchen wir weiße Icons. `NSCompositingOperation.sourceIn` nimmt
-        // das Alpha-Profil aus dem Symbol und ersetzt die Farbe durch die aktuelle
-        // Fülle, ohne das transparente Drumherum mitzufärben.
-        NSColor.white.set()
+        // Das helle Papier-Thema benötigt eine dunkle, warme Symbolfarbe.
+        // `NSCompositingOperation.sourceIn` behält das Alpha-Profil des Symbols
+        // und ersetzt nur dessen Farbe.
+        NSColor(calibratedRed: 0.18, green: 0.16, blue: 0.12, alpha: 1).set()
         NSRect(origin: .zero, size: NSSize(width: logicalW, height: logicalH))
             .fill(using: .sourceIn)
 
@@ -183,7 +182,7 @@ enum LinkMapHTMLBuilder {
         }
         .card {
             padding: 40px 48px;
-            background: rgba(30, 30, 55, 0.6);
+            background: rgba(255, 253, 245, 0.92);
             border: 1px solid #E3D8B7;
             border-radius: 16px;
             max-width: 560px;
@@ -687,12 +686,9 @@ enum LinkMapHTMLBuilder {
         // „Generiert"-Label oben rechts
         let generatedLabel = String(format: t(\.wvGeneratedAt), generatedAt)
 
-        // App-Icon als data-URL für den Header (statt 🗺-Emoji).
-        // Fallback auf das Emoji wenn das Icon-Asset nicht geladen werden kann.
-        let appIconDataURL = Self.appIconDataURL()
-        let headerIcon: String = appIconDataURL.map {
-            "<img src=\"\($0)\" width=\"22\" height=\"22\" alt=\"\" style=\"vertical-align:-5px;margin-right:6px;border-radius:5px\">"
-        } ?? "🗺 "
+        // Die Kopfzeile erhält eine helle, zur Papierfläche passende Notizmarke
+        // statt des dunklen Bundle-App-Icons.
+        let headerIcon = "<span class=\"app-mark\">\(Self.sfSymbolIMG("note.text", pointSize: 15))</span>"
 
         // Stats
         let labelStatsNotes = t(\.wvStatsNotes)
@@ -715,6 +711,7 @@ enum LinkMapHTMLBuilder {
 
         #header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,253,245,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid #E3D8B7; padding: 10px 18px; display: flex; align-items: center; gap: 16px; height: 50px; }
         #header h1 { font-size: 15px; font-weight: 600; white-space: nowrap; }
+        .app-mark { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; margin-right: 6px; vertical-align: -7px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; }
         #stats { font-size: 12px; color: #6C6250; display: flex; gap: 14px; }
         .stat-value { color: #D49A00; font-weight: 600; }
 
@@ -724,8 +721,8 @@ enum LinkMapHTMLBuilder {
            Inline-Img bei schmalen Buttons (z.B. „Radial 2") in eine zweite Textzeile. */
         #mode-toggle button { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border: none; background: #FFF3C4; color: #6C6250; font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
         #mode-toggle button img { display: block; flex-shrink: 0; }
-        #mode-toggle button.active { background: #D49A00; color: white; }
-        #mode-toggle button:hover:not(.active) { background: #3a3a5a; color: #403A2E; }
+        #mode-toggle button.active { background: #D49A00; color: #403A2E; }
+        #mode-toggle button:hover:not(.active) { background: #FFEB9C; color: #403A2E; }
         /* Progressive Collapse beim Verschmälern des Fensters. Reihenfolge: zuerst
            geht der Timestamp weg, dann die View-Labels (Icons reichen + Tooltip),
            erst ganz zum Schluss die Stats (informativste Daten zuletzt).
@@ -742,7 +739,7 @@ enum LinkMapHTMLBuilder {
         }
 
         #btn-refresh { margin-left: 10px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; color: #5A5040; cursor: pointer; font-family: inherit; font-size: 14px; transition: all 0.15s; padding: 0; }
-        #btn-refresh:hover { color: #fff; background: #3a3a5a; border-color: #D49A00; }
+        #btn-refresh:hover { color: #fff; background: #FFEB9C; border-color: #D49A00; }
         #btn-refresh.spinning { color: #D49A00; pointer-events: none; }
         #btn-refresh.spinning svg { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -753,7 +750,7 @@ enum LinkMapHTMLBuilder {
         #search-input { width: 180px; max-width: 100%; padding: 5px 10px 5px 28px; border-radius: 6px; border: 1px solid #D8CCA4; background: #FFF3C4; color: #1D1D1F; font-size: 12px; font-family: inherit; outline: none; transition: border-color 0.15s, background 0.15s; }
         #search-input::placeholder { color: #666; }
         #search-input:hover { border-color: #555; }
-        #search-input:focus { border-color: #D49A00; background: #2f2f55; }
+        #search-input:focus { border-color: #D49A00; background: #FFFDF5; }
         #search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none; }
         #search-clear { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; display: none; align-items: center; justify-content: center; border-radius: 50%; background: #555; color: #fff; cursor: pointer; font-size: 11px; line-height: 1; padding: 0; border: none; }
         #search-wrap.has-text #search-clear { display: flex; }
@@ -761,7 +758,7 @@ enum LinkMapHTMLBuilder {
 
         /* Info-Button (ⓘ), gleicher Stil wie Refresh */
         #btn-info { margin-left: 6px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #D8CCA4; border-radius: 6px; background: #FFF3C4; color: #5A5040; cursor: pointer; font-family: inherit; transition: all 0.15s; padding: 0; }
-        #btn-info:hover { color: #fff; background: #3a3a5a; border-color: #D49A00; }
+        #btn-info:hover { color: #fff; background: #FFEB9C; border-color: #D49A00; }
         #btn-info.active { color: #fff; background: #D49A00; border-color: #D49A00; }
 
         /* Instant-Tooltip, zeigt sofort bei Hover (kein native title-Delay).
@@ -773,7 +770,7 @@ enum LinkMapHTMLBuilder {
         #help-modal { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 40px; animation: hm-fade-in 0.18s ease; }
         #help-modal.visible { display: flex; }
         @keyframes hm-fade-in { from { opacity: 0 } to { opacity: 1 } }
-        #help-modal-card { background: rgb(34,34,58); border: 1px solid #3a3a5a; border-radius: 16px; padding: 28px 32px; max-width: 680px; width: 100%; max-height: 100%; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.55); position: relative; animation: hm-pop 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.1); }
+        #help-modal-card { background: #FFFDF5; border: 1px solid #FFEB9C; border-radius: 16px; padding: 28px 32px; max-width: 680px; width: 100%; max-height: 100%; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.55); position: relative; animation: hm-pop 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.1); }
         @keyframes hm-pop { from { transform: scale(0.96) translateY(8px); opacity: 0 } to { transform: none; opacity: 1 } }
         #help-modal-card h2 { font-size: 20px; font-weight: 600; color: #fff; margin: 0 0 12px 0; padding-right: 32px; }
         #help-modal-card h3 { font-size: 11px; font-weight: 700; color: #6C6250; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px 0; }
@@ -820,7 +817,7 @@ enum LinkMapHTMLBuilder {
         /* Schwebende Legende unten-mittig im Kalender-View (nicht mitscrollen).
            Mittig statt rechts, weil das Tag-Panel rechts unten sitzt und
            rechts-bündige Positionierung kollidiert. */
-        #calendar-legend { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #5A5040; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; pointer-events: none; z-index: 20; white-space: nowrap; }
+        #calendar-legend { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #5A5040; background: rgba(255,253,245,0.92); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; pointer-events: none; z-index: 20; white-space: nowrap; }
         #calendar-legend.visible { display: inline-flex; }
         #calendar-legend .cal-legend-swatch { width: 11px; height: 11px; border-radius: 2px; }
         #calendar-legend .cal-legend-sep { color: #555; margin: 0 4px; }
@@ -835,7 +832,7 @@ enum LinkMapHTMLBuilder {
            ~36px hoch → reicht bis bottom:116. Mit bottom:140 bleibt
            ~24px Luft. Bei voll expandierten TAGS (max-height 100vh-180)
            gibt's noch Overlap, aber dann kollabiert der User halt TAGS. */
-        #day-panel { position: fixed; top: 60px; right: 16px; bottom: 140px; width: 340px; background: rgba(30,30,55,0.97); backdrop-filter: blur(10px); border: 1px solid #D8CCA4; border-radius: 12px; padding: 16px; display: none; z-index: 50; flex-direction: column; }
+        #day-panel { position: fixed; top: 60px; right: 16px; bottom: 140px; width: 340px; background: rgba(255,253,245,0.97); backdrop-filter: blur(10px); border: 1px solid #D8CCA4; border-radius: 12px; padding: 16px; display: none; z-index: 50; flex-direction: column; }
         #day-panel.visible { display: flex; }
         #day-panel h2 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #fff; }
         #day-panel-meta { font-size: 12px; color: #6C6250; margin-bottom: 12px; }
@@ -868,13 +865,13 @@ enum LinkMapHTMLBuilder {
            Höher positioniert als 16px, um Konflikt mit ORDNER-Panel zu vermeiden. */
         #monthly-bottom-bar { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; z-index: 21; pointer-events: none; }
         #monthly-bottom-bar > * { pointer-events: auto; }
-        #monthly-legend { display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #5A5040; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; white-space: nowrap; pointer-events: none; }
+        #monthly-legend { display: none; align-items: center; gap: 5px; font-size: 10.5px; color: #5A5040; background: rgba(255,253,245,0.92); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; white-space: nowrap; pointer-events: none; }
         #monthly-legend.visible { display: inline-flex; }
         #monthly-legend .cal-legend-swatch { width: 11px; height: 11px; border-radius: 2px; }
         #monthly-legend .cal-legend-sep { color: #555; margin: 0 4px; }
         #monthly-legend .cal-legend-max { color: #777; font-variant-numeric: tabular-nums; }
         /* Toggle-Button: Zahlen in Zellen ein/aus. */
-        #monthly-toggle-numbers { font-size: 11px; color: #403A2E; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+        #monthly-toggle-numbers { font-size: 11px; color: #403A2E; background: rgba(255,253,245,0.92); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
         #monthly-toggle-numbers:hover { border-color: #D49A00; color: #fff; }
         #monthly-toggle-numbers.off { color: #6C6250; }
         /* Wenn Klasse `.numbers-hidden` am #graph-monthly: alle Zell-Texte transparent.
@@ -897,7 +894,7 @@ enum LinkMapHTMLBuilder {
         .hm3d-label {
             position: absolute; top: 0; left: 0;
             padding: 3px 9px;
-            background: rgba(26, 26, 46, 0.82);
+            background: rgba(255,253,245,0.92);
             border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 12px;
             font-size: 11px;
@@ -943,7 +940,7 @@ enum LinkMapHTMLBuilder {
         #heightmap-tooltip .hm-tt-meta { font-size: 10.5px; color: #6C6250; font-variant-numeric: tabular-nums; }
         #heightmap-bottom-bar { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; align-items: center; z-index: 21; pointer-events: none; }
         #heightmap-bottom-bar > * { pointer-events: auto; }
-        #heightmap-bottom-bar .heightmap-sort-group { display: flex; gap: 2px; align-items: center; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 4px 8px; font-size: 11px; color: #5A5040; }
+        #heightmap-bottom-bar .heightmap-sort-group { display: flex; gap: 2px; align-items: center; background: rgba(255,253,245,0.92); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 4px 8px; font-size: 11px; color: #5A5040; }
         #heightmap-bottom-bar .heightmap-sort-label { color: #777; margin-right: 4px; font-variant-caps: all-small-caps; letter-spacing: 0.5px; }
         #heightmap-bottom-bar .heightmap-sort-group button { font-size: 11px; color: #403A2E; background: transparent; border: none; border-radius: 999px; padding: 4px 10px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
         #heightmap-bottom-bar .heightmap-sort-group button:hover { color: #fff; background: rgba(255,255,255,0.06); }
@@ -985,16 +982,16 @@ enum LinkMapHTMLBuilder {
             text-align: right;
             font-size: 11px;
         }
-        #heightmap-contour-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #5A5040; cursor: pointer; user-select: none; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; }
+        #heightmap-contour-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #5A5040; cursor: pointer; user-select: none; background: rgba(255,253,245,0.92); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; }
         #heightmap-contour-toggle:hover { color: #fff; }
         #heightmap-contour-toggle input { cursor: pointer; accent-color: #D49A00; }
-        #heightmap-legend { display: none; align-items: center; gap: 4px; font-size: 10.5px; color: #5A5040; background: rgba(26,26,46,0.85); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+        #heightmap-legend { display: none; align-items: center; gap: 4px; font-size: 10.5px; color: #5A5040; background: rgba(255,253,245,0.92); backdrop-filter: blur(8px); border: 1px solid #E3D8B7; border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
         #heightmap-legend.visible { display: inline-flex; }
         #heightmap-legend .hm-legend-grad { width: 80px; height: 8px; border-radius: 2px; }
         #heightmap-legend .hm-legend-cap { font-variant-numeric: tabular-nums; color: #403A2E; }
-        #heightmap-overlay { position: absolute; inset: 0; background: rgba(20,20,35,0.94); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 50; transition: opacity 0.3s; }
+        #heightmap-overlay { position: absolute; inset: 0; background: rgba(255,253,245,0.94); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 50; transition: opacity 0.3s; }
         #heightmap-overlay.hidden { opacity: 0; pointer-events: none; }
-        #heightmap-overlay-inner { max-width: 460px; padding: 28px 32px; text-align: center; background: rgba(26,26,46,0.9); border: 1px solid #3a3a5a; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
+        #heightmap-overlay-inner { max-width: 460px; padding: 28px 32px; text-align: center; background: rgba(255,253,245,0.94); border: 1px solid #FFEB9C; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
         #heightmap-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #1D1D1F; }
         #heightmap-message { font-size: 12.5px; color: #5A5040; line-height: 1.55; margin-bottom: 18px; }
         #heightmap-progress-bar { width: 100%; height: 6px; background: #FFF3C4; border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
@@ -1026,7 +1023,7 @@ enum LinkMapHTMLBuilder {
         .node-label { font-size: 10px; fill: #ddd; pointer-events: none; text-anchor: middle; font-family: inherit; }
 
         /* --- Panel rechts --- */
-        #panel { position: fixed; top: 60px; right: 16px; width: 320px; background: rgba(30,30,55,0.97); backdrop-filter: blur(10px); border: 1px solid #D8CCA4; border-radius: 12px; padding: 16px; display: none; z-index: 50; max-height: calc(100vh - 150px); flex-direction: column; }
+        #panel { position: fixed; top: 60px; right: 16px; width: 320px; background: rgba(255,253,245,0.97); backdrop-filter: blur(10px); border: 1px solid #D8CCA4; border-radius: 12px; padding: 16px; display: none; z-index: 50; max-height: calc(100vh - 150px); flex-direction: column; }
         #panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
         #panel .meta { font-size: 12px; color: #6C6250; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         #panel .link-counts { display: flex; gap: 14px; margin-bottom: 10px; }
