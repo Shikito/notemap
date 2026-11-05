@@ -9,6 +9,7 @@
 
 import SwiftUI
 import AppKit
+import ApplicationServices
 
 struct ContentView: View {
     @StateObject private var model = LinkMapModel()
@@ -127,53 +128,84 @@ private enum KozaneSideBySideCoordinator {
         return arrangeCompanionNotesWindow(with: notesBounds)
     }
 
+    private static var companionProcessIdentifier: pid_t?
+
     private static func arrangeCompanionNotesWindow(with bounds: AppleScriptBounds) -> String? {
-        // 通常サイズの Notes ウィンドウがあれば再利用する。すべてがフルスクリーン
-        // のときだけ新規ウィンドウを作るため、操作のたびにウィンドウは増えない。
-        let source = """
-        tell application "Notes" to activate
-        tell application "System Events"
-            tell process "Notes"
-                set companionWindow to missing value
-                repeat with noteWindow in windows
-                    try
-                        if value of attribute "AXFullScreen" of noteWindow is false then
-                            set companionWindow to noteWindow
-                            exit repeat
-                        end if
-                    end try
-                end repeat
-
-                if companionWindow is missing value then
-                    try
-                        click menu item "New Window" of menu "Window" of menu bar 1
-                    on error
-                        click menu item "新規ウインドウ" of menu "ウインドウ" of menu bar 1
-                    end try
-                    delay 0.4
-                    set companionWindow to front window
-                end if
-
-                if companionWindow is not missing value then
-                    set position of companionWindow to {\(bounds.left), \(bounds.top)}
-                    set size of companionWindow to {\(bounds.right - bounds.left), \(bounds.bottom - bounds.top)}
-                end if
-            end tell
-        end tell
-        """
-
-        guard let script = NSAppleScript(source: source) else {
-            return "Notes を操作するスクリプトを作れませんでした。"
+        let promptOption = ["AXTrustedCheckOptionPrompt": true] as CFDictionary
+        guard AXIsProcessTrustedWithOptions(promptOption) else {
+            return "システム設定 > プライバシーとセキュリティ > アクセシビリティで NotesMap を許可してから、もう一度試してください。"
         }
 
-        var error: NSDictionary?
-        script.executeAndReturnError(&error)
-
-        guard let error else {
-            return nil
+        if let companion = existingCompanionApplication() {
+            return position(companion, in: bounds)
         }
-        return error[NSAppleScript.errorMessage] as? String
-            ?? "macOS が Notes または System Events の操作を許可しませんでした。"
+
+        let notesURL = URL(fileURLWithPath: "/System/Applications/Notes.app")
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = false
+        configuration.addsToRecentItems = false
+        configuration.createsNewApplicationInstance = true
+
+        NSWorkspace.shared.openApplication(at: notesURL, configuration: configuration) { application, _ in
+            guard let application else { return }
+
+            let processIdentifier = application.processIdentifier
+            Task { @MainActor in
+                companionProcessIdentifier = processIdentifier
+                try? await Task.sleep(nanoseconds: 500_000_000)
+                guard let companion = existingCompanionApplication() else { return }
+                _ = position(companion, in: bounds)
+            }
+        }
+        return nil
+    }
+
+    private static func existingCompanionApplication() -> NSRunningApplication? {
+        guard let processIdentifier = companionProcessIdentifier else { return nil }
+
+        return NSRunningApplication
+            .runningApplications(withBundleIdentifier: "com.apple.Notes")
+            .first(where: { $0.processIdentifier == processIdentifier && !$0.isTerminated })
+    }
+
+    private static func position(
+        _ application: NSRunningApplication,
+        in bounds: AppleScriptBounds
+    ) -> String? {
+        let applicationElement = AXUIElementCreateApplication(application.processIdentifier)
+        var focusedWindow: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(
+            applicationElement,
+            kAXFocusedWindowAttribute as CFString,
+            &focusedWindow
+        ) == .success,
+        let focusedWindow else {
+            return "Kozane 用に起動した Notes のウィンドウが見つかりません。"
+        }
+
+        let windowElement = unsafeBitCast(focusedWindow, to: AXUIElement.self)
+        var position = CGPoint(x: bounds.left, y: bounds.top)
+        var size = CGSize(width: bounds.right - bounds.left, height: bounds.bottom - bounds.top)
+        guard let positionValue = AXValueCreate(.cgPoint, &position),
+              let sizeValue = AXValueCreate(.cgSize, &size) else {
+            return "Notes ウィンドウの位置を作れませんでした。"
+        }
+
+        let positionResult = AXUIElementSetAttributeValue(
+            windowElement,
+            kAXPositionAttribute as CFString,
+            positionValue
+        )
+        let sizeResult = AXUIElementSetAttributeValue(
+            windowElement,
+            kAXSizeAttribute as CFString,
+            sizeValue
+        )
+        guard positionResult == .success, sizeResult == .success else {
+            return "macOS が Kozane 用 Notes の配置変更を許可しませんでした。"
+        }
+        application.activate()
+        return nil
     }
 
     private struct AppleScriptBounds: Sendable {
