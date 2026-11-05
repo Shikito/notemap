@@ -10,8 +10,9 @@
 [完了] boco mothership に Ollama と埋め込みモデルを導入
 [完了] boco-mothership.local 経由でMacからGPU埋め込みを実行
 [完了] アプリのOllama接続先を設定可能にする
+[完了] HeightmapでリモートGPUの実メモ埋め込みを実行
    ↓
-[次]   HeightmapでリモートGPUの埋め込みを実機検証
+[次]   意味的な関係線と説明UIの設計・実装
 ```
 
 ## 検証・開発の流れ
@@ -38,6 +39,7 @@ Heightmapで初回の全ノート埋め込みを実行・確認
 - 多言語埋め込みモデル `qwen3-embedding:4b`（約2.5GB）を導入し、2,560次元のGPU埋め込みを確認。
 - Ollamaは `boco-mothership.local:11434` で自宅LANから利用できる。Windows Defenderの許可範囲は `192.168.151.0/24` に限定。
 - アプリのSettingsからOllamaサーバーを変更でき、モデル一覧・モデル取得・埋め込み・ラベル生成が同じ接続先を使用する。
+- Settingsに `http://boco-mothership.local:11434` と `qwen3-embedding:4b` を保存し、Heightmapの実行で557件・2,560次元の埋め込み生成を完了。
 
 ## 実機確認済み
 
@@ -51,7 +53,7 @@ Heightmapで初回の全ノート埋め込みを実行・確認
 
 ## 次の作業
 
-Settingsで `http://boco-mothership.local:11434` と `qwen3-embedding:4b` を保存し、Heightmapの実メモ埋め込みを確認する。
+変更されたメモだけを非同期に再埋め込みし、意味的な近さを線と説明としてグラフへ追加する設計を固める。
 
 ## 外出先での利用
 
