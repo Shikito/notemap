@@ -33,6 +33,8 @@
 	<string>14.0</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>NotesMap uses System Events only when you choose to arrange an Apple Notes window beside Kozane.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 Florian Kümmel</string>
 	<key>SUEnableAutomaticChecks</key>
